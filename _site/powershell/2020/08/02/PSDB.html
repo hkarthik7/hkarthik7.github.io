@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>PSDB - PowerShell module to automate export and import Sql database as .bacpac file</title>
+	
+	<meta name="description" content="Automate Azure Sql database import and export with PSDB module.">
+	
+	<meta name="author" content="Harish Karthic">
+
+	<!-- Enable responsive viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-site-verification" content="OtiazpwYWB3A71Cr0WkitUPn7iH86UVsbq0zCDK2Aec" />
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Le styles -->
+	<link href="/assets/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/assets/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/assets/resources/syntax/syntax.css" rel="stylesheet">
+	<link href="/assets/css/style.css" rel="stylesheet">
+
+	<!-- Le fav and touch icons -->
+	<!-- Update these with your own images
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+	-->
+	<link rel="shortcut icon" href="https://i1.wp.com/thehappymarriage.com.au/wp-content/uploads/2016/07/favicon-H-white.png?ssl=1">
+
+	<link rel="alternate" type="application/rss+xml" title="" href="/sitemap.xml">
+</head>
+
+<body>
+	<nav class="navbar navbar-default visible-xs" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+			<a type="button" class="navbar-toggle nav-link" href="http://github.com/hkarthik7">
+				<i class="fa fa-github"></i>
+			</a>
+			
+			
+			
+			<a type="button" class="navbar-toggle nav-link" href="mailto:hkarthicb@gmail.com">
+				<i class="fa fa-envelope"></i>
+			</a>
+			
+			<a class="navbar-brand" href="/">
+				<img src="/assets/ico/harish-karthic.jpg" class="img-circle" />
+				Harish Karthic
+			</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/">Home</a></li>
+				<li><a href="/categories.html">Categories</a></li>
+				<li><a href="/tags.html">Tags</a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</nav>
+
+	<!-- nav-menu-dropdown -->
+	<div class="btn-group hidden-xs" id="nav-menu">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-bars"></i>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+			<li><a href="/categories.html"><i class="fa fa-folder"></i>Categories</a></li>
+			<li><a href="/tags.html"><i class="fa fa-tags"></i>Tags</a></li>
+			<li class="divider"></li>
+			<li><a href="#"><i class="fa fa-arrow-up"></i>Top of Page</a></li>
+		</ul>
+	</div>
+
+	<div class="col-sm-3 sidebar hidden-xs" style="">
+		<!-- sidebar.html -->
+<header class="sidebar-header" role="banner">
+	<a href="/">
+		<img src="/assets/ico/harish-karthic.jpg" class="img-circle" />
+	</a>
+	<h3 class="title">
+        <a href="/">Harish Karthic</a>
+    </h3>
+</header>
+
+
+<div id="bio" class="text-center">
+	Azure DevOps Engineer and Automation Enthusiast
+</div>
+
+
+<div id="contact-list" class="text-center">
+	<ul class="list-unstyled list-inline">
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://github.com/hkarthik7">
+				<i class="fa fa-github-alt fa-lg"></i>
+			</a>
+		</li>
+		
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="mailto:hkarthicb@gmail.com">
+				<i class="fa fa-envelope fa-lg"></i>
+			</a>
+		</li>
+		
+	</ul>
+	<ul id="contact-list-secondary" class="list-unstyled list-inline">
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://linkedin.com/in/harish-karthic-b">
+				<i class="fa fa-linkedin fa-lg"></i>
+			</a>
+		</li>
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="/sitemap.xml">
+				<i class="fa fa-rss fa-lg"></i>
+			</a>
+		</li>
+	</ul>
+</div>
+<!-- sidebar.html end -->
+
+	</div>
+
+	<div class="col-sm-9 col-sm-offset-3">
+		<div class="page-header">
+  <h1>PSDB - PowerShell module to automate export and import Sql database as .bacpac file </h1>
+</div>
+	
+<article>
+
+	<div class="col-sm-10">
+	 <span class="post-date">
+	   
+	   August 
+	   2nd,
+	     
+	   2020
+	 </span>
+	  <div class="article_body">
+	  <p><i class="fa fa-flag"></i></p>
+
+<p><strong>PSDB</strong> is a PowerShell module which acts as a wrapper for <code class="language-plaintext highlighter-rouge">New-AzSqlDatabaseExport</code> and <code class="language-plaintext highlighter-rouge">New-AzSqlDatabaseImport</code> cmdlets. It provides tab completion for Resource Groups, Sql servers, Key Vault and storage account name which are essential to perform import and export operation.</p>
+
+<p>Azure Sql database can be copied or exported based on our requirement. One of the features provided by Azure is that the database can be exported as .bacpac file and saved in storage account which later can be imported to Azure Sql database. This file holds metadata and database data.</p>
+
+<p><em>Az.Sql</em> module is packed with useful cmdlets which can be used to automate the export and import functionality of database. To make the full use of export and import functionality and to automate it end to end right from exporting the database as .bacpac file, storing it in a storage account till it is imported to another database which could potentially be in another subscription could be quite tedious. This is where <strong>PSDB</strong> module comes into picture. It acts as a wrapper for these cmdlets and provides tab completion for few mandatory parameters and helps you to replicate the functionality of export and import operation that you would perform in Azure portal.</p>
+
+<h2 id="installation">Installation</h2>
+
+<p><strong>PSDB</strong> module is available in <a href="https://www.powershellgallery.com/packages/PSDB/0.1.12">PowerShell Gallery</a> which means you can directly install it if you are using PowerShell v5.1 and above.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Install-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">PSDB</span><span class="w"> </span><span class="nt">-Scope</span><span class="w"> </span><span class="nx">CurrentUser</span><span class="w">
+</span></code></pre></div></div>
+
+<h2 id="module-deep-dive">Module Deep Dive</h2>
+
+<p>Now that the module is installed, lets see what are the functions available.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Import-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">PSDB</span><span class="w">
+</span><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Get-Command</span><span class="w"> </span><span class="nt">-Module</span><span class="w"> </span><span class="nx">PSDB</span><span class="w">
+
+</span><span class="nf">CommandType</span><span class="w">     </span><span class="nx">Name</span><span class="w">                                               </span><span class="nx">Version</span><span class="w">    </span><span class="nx">Source</span><span class="w">
+</span><span class="nf">-----------</span><span class="w">     </span><span class="nf">----</span><span class="w">                                               </span><span class="nf">-------</span><span class="w">    </span><span class="nf">------</span><span class="w">
+</span><span class="kr">Function</span><span class="w">        </span><span class="nf">Export-PSDBSqlDatabase</span><span class="w">                             </span><span class="mf">0.1.13</span><span class="w">     </span><span class="nf">PSDB</span><span class="w">
+</span><span class="nx">Function</span><span class="w">        </span><span class="nx">Get-PSDBDatabaseData</span><span class="w">                               </span><span class="nx">0.1.13</span><span class="w">     </span><span class="nx">PSDB</span><span class="w">
+</span><span class="kr">Function</span><span class="w">        </span><span class="nf">Get-PSDBImportExportStatus</span><span class="w">                         </span><span class="mf">0.1.13</span><span class="w">     </span><span class="nf">PSDB</span><span class="w">
+</span><span class="nx">Function</span><span class="w">        </span><span class="nx">Get-PSDBKVSecret</span><span class="w">                                   </span><span class="nx">0.1.13</span><span class="w">     </span><span class="nx">PSDB</span><span class="w">
+</span><span class="kr">Function</span><span class="w">        </span><span class="nf">Import-PSDBSqlDatabase</span><span class="w">                             </span><span class="mf">0.1.13</span><span class="w">     </span><span class="nf">PSDB</span><span class="w">
+</span><span class="nx">Function</span><span class="w">        </span><span class="nx">Invoke-PSDBDatabaseQuery</span><span class="w">                           </span><span class="nx">0.1.13</span><span class="w">     </span><span class="nx">PSDB</span><span class="w">
+</span><span class="kr">Function</span><span class="w">        </span><span class="nf">Set-PSDBDefaults</span><span class="w">                                   </span><span class="mf">0.1.13</span><span class="w">     </span><span class="nf">PSDB</span><span class="w">
+</span></code></pre></div></div>
+
+<p>So, for now there are seven functions available in v0.1.13. Let’s explore the usage of Export function first with PowerShell’s help system.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">help</span><span class="w"> </span><span class="nx">Export-PSDBSqlDatabase</span><span class="w">
+
+</span><span class="nf">NAME</span><span class="w">
+    </span><span class="nx">Export-PSDBSqlDatabase</span><span class="w">
+
+</span><span class="nf">SYNOPSIS</span><span class="w">
+    </span><span class="nx">Export-PSDBSqlDatabase</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">wrapper</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">New-AzSqlDatabaseExport</span><span class="w"> </span><span class="nx">cmdlet</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">tab</span><span class="w"> </span><span class="nx">completion</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">mandatory</span><span class="w"> </span><span class="nx">parameters.</span><span class="w">
+
+
+</span><span class="nf">SYNTAX</span><span class="w">
+    </span><span class="nx">Export-PSDBSqlDatabase</span><span class="w"> </span><span class="p">[</span><span class="nt">-DatabaseName</span><span class="p">]</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">String</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-AdministratorLogin</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">String</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-AdministratorLoginPassword</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">SecureString</span><span class="err">&gt;</span><span class="w"> </span><span class="p">[</span><span class="nt">-BlobName</span><span class="w"> </span><span class="err">&lt;</span><span class="kt">String</span><span class="err">&gt;</span><span class="p">]</span><span class="w"> </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">String</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-ServerName</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">String</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-StorageAccountName</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">String</span><span class="err">&gt;</span><span class="w"> </span><span class="nt">-StorageContainerName</span><span class="w"> </span><span class="err">&lt;</span><span class="nx">String</span><span class="err">&gt;</span><span class="w"> </span><span class="p">[</span><span class="nt">-StorageKeyType</span><span class="w"> </span><span class="err">&lt;</span><span class="kt">String</span><span class="err">&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="nt">-Subscription</span><span class="w"> </span><span class="err">&lt;</span><span class="kt">String</span><span class="err">&gt;</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="err">&lt;</span><span class="kt">CommonParameters</span><span class="err">&gt;</span><span class="p">]</span><span class="w">
+
+
+</span><span class="nf">DESCRIPTION</span><span class="w">
+    </span><span class="nx">Export-PSDBSqlDatabase</span><span class="w"> </span><span class="nx">is</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="nx">wrapper</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">New-AzSqlDatabaseExport</span><span class="w"> </span><span class="nx">cmdlet</span><span class="w"> </span><span class="nx">with</span><span class="w"> </span><span class="nx">tab</span><span class="w"> </span><span class="nx">completion</span><span class="w"> </span><span class="nx">for</span><span class="w"> </span><span class="nx">mandatory</span><span class="w"> </span><span class="nx">parameters.</span><span class="w"> </span><span class="nx">It</span><span class="w"> </span><span class="nx">helps</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">export</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">database</span><span class="w"> </span><span class="nx">as</span><span class="w"> </span><span class="nx">you</span><span class="w"> </span><span class="nx">would</span><span class="w"> </span><span class="nx">do</span><span class="w"> </span><span class="nx">in</span><span class="w"> </span><span class="nx">Azure</span><span class="w"> </span><span class="nx">portal.</span><span class="w">
+
+    </span><span class="nf">You</span><span class="w"> </span><span class="nx">can</span><span class="w"> </span><span class="nx">save</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">exported</span><span class="w"> </span><span class="o">.</span><span class="nf">bacpac</span><span class="w"> </span><span class="nx">file</span><span class="w"> </span><span class="nx">in</span><span class="w"> </span><span class="nx">different</span><span class="w"> </span><span class="nx">subscription</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">providing</span><span class="w"> </span><span class="nx">values</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">storage</span><span class="w"> </span><span class="nx">account</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">container</span><span class="w"> </span><span class="nx">name</span><span class="w"> </span><span class="nx">and</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">subscription.</span><span class="w">
+
+
+</span><span class="nf">RELATED</span><span class="w"> </span><span class="nx">LINKS</span><span class="w">
+
+</span><span class="nf">REMARKS</span><span class="w">
+    </span><span class="nx">To</span><span class="w"> </span><span class="nx">see</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">examples</span><span class="p">,</span><span class="w"> </span><span class="nx">type:</span><span class="w"> </span><span class="s2">"get-help Export-PSDBSqlDatabase -examples"</span><span class="o">.</span><span class="w">
+    </span><span class="kr">For</span><span class="w"> </span><span class="nf">more</span><span class="w"> </span><span class="nx">information</span><span class="p">,</span><span class="w"> </span><span class="nx">type:</span><span class="w"> </span><span class="s2">"get-help Export-PSDBSqlDatabase -detailed"</span><span class="o">.</span><span class="w">
+    </span><span class="kr">For</span><span class="w"> </span><span class="nf">technical</span><span class="w"> </span><span class="nx">information</span><span class="p">,</span><span class="w"> </span><span class="nx">type:</span><span class="w"> </span><span class="s2">"get-help Export-PSDBSqlDatabase -full"</span><span class="o">.</span><span class="w">
+</span></code></pre></div></div>
+
+<p>As said it has selected parameters from <code class="language-plaintext highlighter-rouge">New-AzSqlDatabaseExport</code> but it provides additional functionality of tab completion and exporting the database from one subscription to another subscription.</p>
+
+<ul>
+  <li><strong>Export database .bacpac in same subscription</strong></li>
+</ul>
+
+<p>Let’s see an example on how to export .bacpac file in same subscription and compare it with Azure portal.</p>
+
+<p>First retrieve the password from key vault. We can use <code class="language-plaintext highlighter-rouge">Get-PSDBKVSecret</code> function which is a wrapper for <code class="language-plaintext highlighter-rouge">Get-AzKeyVaultSecret</code> and returns only the secret value as secure string. This is specifically designed to work with this module. Also, if you have saved your username in key vault, it can be retrieved as plain text and passed to the function.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nv">$password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Get-PSDBKVSecret</span><span class="w"> </span><span class="nt">-VaultName</span><span class="w"> </span><span class="s2">"kv-01"</span><span class="w"> </span><span class="nt">-SecretName</span><span class="w"> </span><span class="s2">"sqlpassword"</span><span class="w"> </span><span class="c"># tab completion available for key vault name.</span><span class="w">
+</span><span class="nf">System.Security.SecureString</span><span class="w"> </span><span class="c"># will be stored in the variable $password.</span><span class="w">
+
+</span><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nv">$username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">Get-PSDBKVSecret</span><span class="w"> </span><span class="nt">-VaultName</span><span class="w"> </span><span class="s2">"kv-01"</span><span class="w"> </span><span class="nt">-SecretName</span><span class="w"> </span><span class="s2">"sqlusername"</span><span class="w"> </span><span class="nt">-AsPlainText</span><span class="w">
+</span></code></pre></div></div>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Export-PSDBSqlDatabase</span><span class="w"> </span><span class="se">` </span><span class="c"># use alias Export</span><span class="w">
+            </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"myRSG"</span><span class="w"> </span><span class="err">`</span><span class="w"> </span><span class="c"># tab completion available for resource group name.</span><span class="w">
+            </span><span class="nt">-DatabaseName</span><span class="w"> </span><span class="s2">"SqlDatabase01"</span><span class="w"> </span><span class="err">`</span><span class="w">
+            </span><span class="nt">-ServerName</span><span class="w"> </span><span class="s2">"SqlServer01"</span><span class="w"> </span><span class="err">`</span><span class="w"> </span><span class="c"># tab completion available for sql server.</span><span class="w">
+            </span><span class="nt">-StorageAccountName</span><span class="w"> </span><span class="s2">"sqlbackup"</span><span class="w"> </span><span class="err">`</span><span class="w"> </span><span class="c"># tab completion available for storage account name.</span><span class="w">
+            </span><span class="nt">-StorageContainerName</span><span class="w"> </span><span class="s2">"backups"</span><span class="w"> </span><span class="err">`</span><span class="w">
+            </span><span class="nt">-AdministratorLogin</span><span class="w"> </span><span class="s2">"sqladmin"</span><span class="w"> </span><span class="err">`</span><span class="w">
+            </span><span class="nt">-AdministratorLoginPassword</span><span class="w"> </span><span class="nv">$password</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Now that you will get the status link once you run the above cmdlet. This can then be passed to <code class="language-plaintext highlighter-rouge">Get-PSDBImportExportStatus</code> to get the status of export operation.</p>
+
+<ul>
+  <li>Say that you want to export the .bacpac file to different subscription (which is possible in portal) this can be simply achieved by passing the value to -Subscription parameter and specifying the storage account name and container name which are in the subscription that you want to save the file to.</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Export-PSDBSqlDatabase</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"myRSG"</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-DatabaseName</span><span class="w"> </span><span class="s2">"SqlDatabase01"</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-ServerName</span><span class="w"> </span><span class="s2">"SqlServer01"</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-StorageAccountName</span><span class="w"> </span><span class="s2">"sqlbackup"</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-StorageContainerName</span><span class="w"> </span><span class="s2">"backups"</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-AdministratorLogin</span><span class="w"> </span><span class="s2">"sqladmin"</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-AdministratorLoginPassword</span><span class="w"> </span><span class="nv">$password</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-Subscription</span><span class="w"> </span><span class="s2">"mySubscription02"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>As in Azure portal the .bacpac file will be exported as <code class="language-plaintext highlighter-rouge">databaseName-YYYY-MM-DD-HH-SS.bacpac</code> format. This can be changed by passing the database name to -BlobName parameter. Make sure to use the same name while importing the database too.</p>
+
+<ul>
+  <li><strong>Import database .bacpac in same subscription</strong></li>
+</ul>
+
+<p>Now that you have .bacpac file saved in subscription <code class="language-plaintext highlighter-rouge">A</code> and you want to import it to the same subscription but to different database. This can be done as follows.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Import-PSDBSqlDatabase</span><span class="w"> </span><span class="se">` </span><span class="c"># use alias Import</span><span class="w">
+            </span><span class="nt">-ResourceGroupName</span><span class="w"> </span><span class="s2">"myRSG02"</span><span class="w"> </span><span class="err">`</span><span class="w"> </span><span class="c"># tab completion available for resource group name.</span><span class="w">
+            </span><span class="nt">-ServerName</span><span class="w"> </span><span class="s2">"SqlServer02"</span><span class="w"> </span><span class="err">`</span><span class="w"> </span><span class="c"># tab completion available for sql server.</span><span class="w">
+            </span><span class="nt">-StorageAccountName</span><span class="w"> </span><span class="s2">"sqlbackup"</span><span class="w"> </span><span class="err">`</span><span class="w"> </span><span class="c"># tab completion available for storage account name.</span><span class="w">
+            </span><span class="nt">-StorageContainerName</span><span class="w"> </span><span class="s2">"backups"</span><span class="w"> </span><span class="err">`</span><span class="w">
+            </span><span class="nt">-AdministratorLogin</span><span class="w"> </span><span class="s2">"sqladmin02"</span><span class="w"> </span><span class="err">`</span><span class="w">
+            </span><span class="nt">-AdministratorLoginPassword</span><span class="w"> </span><span class="p">(</span><span class="s2">"securepassword"</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">ConvertTo-SecureString</span><span class="w"> </span><span class="nt">-AsPlainText</span><span class="w"> </span><span class="nt">-Force</span><span class="p">)</span><span class="w">
+</span></code></pre></div></div>
+
+<p>Now that the .bacpac file will be imported to the database and the status can be retrieved with function <code class="language-plaintext highlighter-rouge">Get-PSDBImportExportStatus.</code></p>
+
+<ul>
+  <li><strong>Get-PSDBImportExportStatus</strong></li>
+</ul>
+
+<p>Function <code class="language-plaintext highlighter-rouge">Get-PSDBImportExportStatus</code> helps you to not only check the status of import or export function but also to automate it. It is very useful when you want to automate the end to end import and export operation within same or different subscription and wait until one function is completed or to terminate the script if the function takes too long to complete.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Get-PSDBImportExportStatus</code> has -Wait switch which allows you to wait till a function completes and report the status continuously. The waiting period (Interval) and script termination time (Time out) can be controlled by -TimeOut and -Interval parameters respectively.</p>
+
+<script src="https://gist.github.com/hkarthik7/15b423fbff84c91adc40b380e7df1796.js"></script>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Get-PSDBDatabaseData</code> and <code class="language-plaintext highlighter-rouge">Invoke-PSDBDatabaseQuery</code> are other useful functions included in this module which you can use to run query against the databases.</li>
+</ul>
+
+<h2 id="closing">Closing</h2>
+
+<p>This is an introduction to the module and what you can gain with this. You can find the source code for module <a href="https://github.com/hkarthik7/PSDB">here</a> and add your comments for any issue.</p>
+
+	  </div>
+
+		
+		<ul class="tag_box list-unstyled list-inline">
+		  <li><i class="fa fa-folder-open"></i></li>
+		  
+		  
+			 
+				<li><a href="/categories.html#PowerShell-ref">
+					PowerShell <span>(2)</span>
+					
+				</a></li>
+			
+		  
+		</ul>
+		  
+
+		
+		<ul class="list-inline">
+		  <li><i class="fa fa-tags"></i></li>
+		  
+		  
+			 
+				<li>
+					<a href="/tags.html#Azure-ref">
+					Azure <span>(1)</span>
+					,
+					</a>
+				</li>
+			 
+				<li>
+					<a href="/tags.html#PowerShell-ref">
+					PowerShell <span>(2)</span>
+					
+					</a>
+				</li>
+			
+		  
+		  
+		</ul>
+		  
+
+		<hr>
+
+		<div>
+      <section class="share col-sm-6">
+        <h4 class="section-title">Share Post</h4>
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=PSDB - PowerShell module to automate export and import Sql database as .bacpac file"
+           onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <i class="fa fa-twitter fa-lg"></i>
+          Twitter
+        </a>
+        <a class="btn btn-default btn-sm facebook" href="https://www.facebook.com/sharer/sharer.php"
+           onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <i class="fa fa-facebook fa-lg"></i>
+          Facebook
+        </a>
+        <!-- <a class="btn btn-default btn-sm gplus"
+           onclick="window.open('https://plus.google.com/share?url='+window.location.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <i class="fa fa-google-plus fa-lg"></i>
+          Google+
+        </a> -->
+      </section>
+
+      <section class="col-sm-6 author">
+        <!-- <img src="/assets/ico/harish-karthic.jpg" class="img-rounded author-image" /> -->
+        <h4 class="section-title author-name">Harish Karthic</h4>
+        <p class="author-bio">Azure DevOps Engineer and Automation Enthusiast</p>
+      </section>
+    </div>
+
+    <div class="clearfix"></div>
+
+		<ul class="pager">
+		  
+		  <li class="previous disabled"><a>&larr; Previous</a></li>
+		  
+		  
+		  <li class="next"><a href="/powershell/2020/08/03/psAzD.html" title="psAzD - PowerShell module for Azure DevOps API">Next &rarr;</a></li>
+		  
+		</ul>
+
+		<hr>
+	</div>
+	
+	<div class="col-sm-2 sidebar-2">
+	
+	</div>
+</article>
+<div class="clearfix"></div>
+
+
+
+
+
+		<footer>
+			<hr/>
+			<p class="text-muted" style="padding-left: 600px;">
+				&copy; 2020 Harish Karthic
+			</p>
+			<span class="text-muted" style="padding-left: 600px;">Theme by debyll - Jekyll</span>
+		</footer>
+	</div>
+
+	<script type="text/javascript" src="/assets/resources/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/js/app.js"></script>
+</body>
+</html>
+
+
+

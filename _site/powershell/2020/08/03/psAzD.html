@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>psAzD - PowerShell module for Azure DevOps API</title>
+	
+	<meta name="description" content="Get information from Azure DevOps API using psAzD PowerShell module.">
+	
+	<meta name="author" content="Harish Karthic">
+
+	<!-- Enable responsive viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-site-verification" content="OtiazpwYWB3A71Cr0WkitUPn7iH86UVsbq0zCDK2Aec" />
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Le styles -->
+	<link href="/assets/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/assets/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/assets/resources/syntax/syntax.css" rel="stylesheet">
+	<link href="/assets/css/style.css" rel="stylesheet">
+
+	<!-- Le fav and touch icons -->
+	<!-- Update these with your own images
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+	-->
+	<link rel="shortcut icon" href="https://i1.wp.com/thehappymarriage.com.au/wp-content/uploads/2016/07/favicon-H-white.png?ssl=1">
+
+	<link rel="alternate" type="application/rss+xml" title="" href="/sitemap.xml">
+</head>
+
+<body>
+	<nav class="navbar navbar-default visible-xs" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+			<a type="button" class="navbar-toggle nav-link" href="http://github.com/hkarthik7">
+				<i class="fa fa-github"></i>
+			</a>
+			
+			
+			
+			<a type="button" class="navbar-toggle nav-link" href="mailto:hkarthicb@gmail.com">
+				<i class="fa fa-envelope"></i>
+			</a>
+			
+			<a class="navbar-brand" href="/">
+				<img src="/assets/ico/harish-karthic.jpg" class="img-circle" />
+				Harish Karthic
+			</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/">Home</a></li>
+				<li><a href="/categories.html">Categories</a></li>
+				<li><a href="/tags.html">Tags</a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</nav>
+
+	<!-- nav-menu-dropdown -->
+	<div class="btn-group hidden-xs" id="nav-menu">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-bars"></i>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+			<li><a href="/categories.html"><i class="fa fa-folder"></i>Categories</a></li>
+			<li><a href="/tags.html"><i class="fa fa-tags"></i>Tags</a></li>
+			<li class="divider"></li>
+			<li><a href="#"><i class="fa fa-arrow-up"></i>Top of Page</a></li>
+		</ul>
+	</div>
+
+	<div class="col-sm-3 sidebar hidden-xs" style="">
+		<!-- sidebar.html -->
+<header class="sidebar-header" role="banner">
+	<a href="/">
+		<img src="/assets/ico/harish-karthic.jpg" class="img-circle" />
+	</a>
+	<h3 class="title">
+        <a href="/">Harish Karthic</a>
+    </h3>
+</header>
+
+
+<div id="bio" class="text-center">
+	Azure DevOps Engineer and Automation Enthusiast
+</div>
+
+
+<div id="contact-list" class="text-center">
+	<ul class="list-unstyled list-inline">
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://github.com/hkarthik7">
+				<i class="fa fa-github-alt fa-lg"></i>
+			</a>
+		</li>
+		
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="mailto:hkarthicb@gmail.com">
+				<i class="fa fa-envelope fa-lg"></i>
+			</a>
+		</li>
+		
+	</ul>
+	<ul id="contact-list-secondary" class="list-unstyled list-inline">
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://linkedin.com/in/harish-karthic-b">
+				<i class="fa fa-linkedin fa-lg"></i>
+			</a>
+		</li>
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="/sitemap.xml">
+				<i class="fa fa-rss fa-lg"></i>
+			</a>
+		</li>
+	</ul>
+</div>
+<!-- sidebar.html end -->
+
+	</div>
+
+	<div class="col-sm-9 col-sm-offset-3">
+		<div class="page-header">
+  <h1>psAzD - PowerShell module for Azure DevOps API </h1>
+</div>
+	
+<article>
+
+	<div class="col-sm-10">
+	 <span class="post-date">
+	   
+	   August 
+	   3rd,
+	     
+	   2020
+	 </span>
+	  <div class="article_body">
+	  <p>Working with APIs has become tremendously increased &amp; necessary for getting and managing data. Many of the programming and scripting languages supports API call with its native functionality. After the introduction of <code class="language-plaintext highlighter-rouge">Invoke-RestMethod</code> in <code class="language-plaintext highlighter-rouge">PowerShell</code> it has become more fun to work with APIs as we will have the results in objects than a plain text in the working session. This has become more useful when we automate some tasks with PowerShell.</p>
+
+<p>One such is Azure DevOps API, you can view the official documentation <a href="https://docs.microsoft.com/en-us/rest/api/azure/devops/?view=azure-devops-rest-6.0">here</a>. The API documentation is vast and it could be hard to construct url for each and every API call. There are client SDKs available which makes easy to work with this vast API. One such simple SDK or a module for PowerShell is <strong>psAzD</strong> available in <a href="https://www.powershellgallery.com/packages/psAzD/3.1.0">PowerShell Gallery</a>. This is a wrapper for Azure DevOps API which exactly replicates the construction of URL as per the documentation.</p>
+
+<p>Let’s explore the working and usage of <strong>psAzD</strong> module in this post.</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ol>
+  <li>Installation</li>
+  <li>Getting Started</li>
+  <li>Cmdlet Naming Convention</li>
+  <li>Examples</li>
+  <li>Closing</li>
+</ol>
+
+<h3 id="installation">Installation</h3>
+
+<p>Install <strong>psAzD</strong> module from <a href="https://www.powershellgallery.com/packages/psAzD/3.1.0">PowerShell Gallery</a> if you are using PowerShell version 5.1 or above. Since it is not open sourced yet, this is the only way to get the module.</p>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># you need elevated permission to download for system scope</span><span class="w">
+</span><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Install-Module</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="nx">psAzD</span><span class="w"> </span><span class="nt">-Scope</span><span class="w"> </span><span class="nx">CurrentUser</span><span class="w">
+</span></code></pre></div></div>
+
+<h3 id="getting-started">Getting Started</h3>
+
+<p>As of now the only released version is v3.1.0 and there are bunch of cmdlets available in the module which are separated by services and it’s resources. You will need <code class="language-plaintext highlighter-rouge">Azure DevOps</code> personal access token to retrieve the information API. You can view the official documentation <a href="https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&amp;tabs=preview-page">here</a> to know how to set up your personal access token.</p>
+
+<p><strong>psAzD</strong> provide tab completion for <code class="language-plaintext highlighter-rouge">Project Id</code>, <code class="language-plaintext highlighter-rouge">Repository Name</code>, <code class="language-plaintext highlighter-rouge">Team Id</code> as of now.</p>
+
+<ul>
+  <li>Run help with the module name to view a brief intro about the module.</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># if you are using windows system you can run the below cmdlet with -ShowWindow switch to view the help in a nice gui.</span><span class="w">
+</span><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Get-Help</span><span class="w"> </span><span class="nx">psAzD</span><span class="w">
+</span></code></pre></div></div>
+
+<ul>
+  <li>Most of the cmdlets require you to provide <em>OrganizationName</em>, <em>AzureDevOpsToken</em> and <em>ProjectName</em>. Setting all these as the default parameters helps to work with the module easily. This way you don’t have set these parameter for all the cmdlets you run, these will be set as environment variables in the current process or PowerShell session you run and picked up dynamically for cmdlets for which these are mandatory parameters.</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Set-AzDDefaultParameters</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-Organization</span><span class="w"> </span><span class="s2">"Organization Name"</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-PersonalAccessToken</span><span class="w"> </span><span class="s2">"Azure DevOps Personal Access Token"</span><span class="w"> </span><span class="se">`
+</span><span class="w">            </span><span class="nt">-Project</span><span class="w"> </span><span class="s2">"Project Name"</span><span class="w">
+</span></code></pre></div></div>
+
+<p>That’s it, you are set. Now lets explore some useful cmdlets and it’s functions.</p>
+
+<ul>
+  <li>Each and every cmdlet has help embedded and linked to official documentation. So when you run <code class="language-plaintext highlighter-rouge">help cmdlet-name -online</code> for a cmdet you will be diverted to the appropriate online documentation page.</li>
+</ul>
+
+<h3 id="cmdlet-naming-convention">Cmdlet Naming Convention</h3>
+
+<p>Each cmdlet is named with prefix AzD which stands for Azure DevOps followed by it’s service and it’s resource.</p>
+
+<p>For instance, the cmdlet to query all projects of your organization is <strong>Get-AzDCoreProjects</strong> where <code class="language-plaintext highlighter-rouge">AzD</code> stands for Azure DevOps, <code class="language-plaintext highlighter-rouge">Core</code> is the service and <code class="language-plaintext highlighter-rouge">Projects</code> is the resource.</p>
+
+<h3 id="examples">Examples</h3>
+
+<ul>
+  <li>Now that the default parameters are set in the current session, lets retrieve information API.</li>
+</ul>
+
+<script src="https://gist.github.com/hkarthik7/4312fbae306b332c1c8131de96e6ad31.js"></script>
+
+<h3 id="closing">Closing</h3>
+
+<p>Provided are few cmdlets that I found more useful, there are other useful cmdlets which helps to get the granular level information from Azure DevOps API. Feel free to explore and raise for any concerns from the contact owner section in PowerShell Gallery.</p>
+
+	  </div>
+
+		
+		<ul class="tag_box list-unstyled list-inline">
+		  <li><i class="fa fa-folder-open"></i></li>
+		  
+		  
+			 
+				<li><a href="/categories.html#PowerShell-ref">
+					PowerShell <span>(2)</span>
+					
+				</a></li>
+			
+		  
+		</ul>
+		  
+
+		
+		<ul class="list-inline">
+		  <li><i class="fa fa-tags"></i></li>
+		  
+		  
+			 
+				<li>
+					<a href="/tags.html#Azure DevOps-ref">
+					Azure DevOps <span>(1)</span>
+					,
+					</a>
+				</li>
+			 
+				<li>
+					<a href="/tags.html#PowerShell-ref">
+					PowerShell <span>(2)</span>
+					
+					</a>
+				</li>
+			
+		  
+		  
+		</ul>
+		  
+
+		<hr>
+
+		<div>
+      <section class="share col-sm-6">
+        <h4 class="section-title">Share Post</h4>
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=psAzD - PowerShell module for Azure DevOps API"
+           onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <i class="fa fa-twitter fa-lg"></i>
+          Twitter
+        </a>
+        <a class="btn btn-default btn-sm facebook" href="https://www.facebook.com/sharer/sharer.php"
+           onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <i class="fa fa-facebook fa-lg"></i>
+          Facebook
+        </a>
+        <!-- <a class="btn btn-default btn-sm gplus"
+           onclick="window.open('https://plus.google.com/share?url='+window.location.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <i class="fa fa-google-plus fa-lg"></i>
+          Google+
+        </a> -->
+      </section>
+
+      <section class="col-sm-6 author">
+        <!-- <img src="/assets/ico/harish-karthic.jpg" class="img-rounded author-image" /> -->
+        <h4 class="section-title author-name">Harish Karthic</h4>
+        <p class="author-bio">Azure DevOps Engineer and Automation Enthusiast</p>
+      </section>
+    </div>
+
+    <div class="clearfix"></div>
+
+		<ul class="pager">
+		  
+		  <li class="previous"><a href="/powershell/2020/08/02/PSDB.html" title="PSDB - PowerShell module to automate export and import Sql database as .bacpac file">&larr; Previous</a></li>
+		  
+		  
+			<li class="next disabled"><a>Next &rarr;</a>
+		  
+		</ul>
+
+		<hr>
+	</div>
+	
+	<div class="col-sm-2 sidebar-2">
+	
+	</div>
+</article>
+<div class="clearfix"></div>
+
+
+
+
+
+		<footer>
+			<hr/>
+			<p class="text-muted" style="padding-left: 600px;">
+				&copy; 2020 Harish Karthic
+			</p>
+			<span class="text-muted" style="padding-left: 600px;">Theme by debyll - Jekyll</span>
+		</footer>
+	</div>
+
+	<script type="text/javascript" src="/assets/resources/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/js/app.js"></script>
+</body>
+</html>
+
+
+
