@@ -1,7 +1,7 @@
-_config.yml
-_site/*
+# _config.yml
+# _site/*
 *Thumbs.db
 Gemfile.lock
 .jekyll-cache
-.jekyll.
+.jekyll
 .jekyll-metadata
