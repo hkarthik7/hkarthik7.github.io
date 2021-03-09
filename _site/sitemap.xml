@@ -7,6 +7,143 @@
 		<atom:link href="/sitemap.xml" rel="self" type="application/rss+xml" />
 		
 			<item>
+				<title>Create a CI pipeline to parse http logs of Azure app service</title>
+				<description>&lt;p&gt;Sometimes we may need to analyse the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http&lt;/code&gt; logs in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Azure WebApp&lt;/code&gt; to know the incoming requests and http error codes. Since the logs files usually are overwritten we tend to miss some of the significant logs. We can run query in &lt;strong&gt;Log analytics&lt;/strong&gt; workspace and find out most of the details but what if there aren’t any logs that are relevant to the issus that we are looking for is not in log analytics database? this is where we rely on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http&lt;/code&gt; logs. Downloading the logs from &lt;strong&gt;SCM&lt;/strong&gt; or &lt;strong&gt;KUDU&lt;/strong&gt; and analysing each line is a time consuming task and we may miss few log entries too.&lt;/p&gt;
+
+&lt;p&gt;This is a tedious task if we have to do it for multiple subscriptions and more frequently. This is where we need automation and our &lt;strong&gt;PowerShell&lt;/strong&gt; magic to get the work done for us. We will walk through the script and setup CI pipeline to download and analyse &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http&lt;/code&gt; logs.&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table Of Contents&lt;/h2&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Script walk through&lt;/li&gt;
+  &lt;li&gt;Setup CI pipeline in Azure DevOps&lt;/li&gt;
+  &lt;li&gt;Download and view report&lt;/li&gt;
+  &lt;li&gt;Closing&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id=&quot;script-walk-through&quot;&gt;Script walk through&lt;/h3&gt;
+
+&lt;p&gt;The requirement is divided into two sections,&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Data extraction&lt;/li&gt;
+  &lt;li&gt;Data analysis and visualisation (precisely report generation)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the data extraction section we download the logs from SCM API and in data analysis section we analyse, segregate the logs and generate the report.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;In the first section we’re fetching the details of web app and publishing profile of that web app, this way we will get the credential to access the SCM API. Once we have necessary details we’re calling the API and downloading the present day’s log(s).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script src=&quot;https://gist.github.com/hkarthik7/1b6a7d3ed5104b872da5a39f56b8edea.js&quot;&gt;&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;In data analysis, we’re separating out the section that is required. First things first, we’re getting all the files from the current path and skipping first two lines as we don’t want the headers and extracting the needed contents. This script is intended to run in pipeline once the logs are downloaded. Now we can extract the report and save it as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;html&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;csv&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script src=&quot;https://gist.github.com/hkarthik7/c1ca2e22063b7a0df7e1096447764358.js&quot;&gt;&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Generate a html report from the &lt;strong&gt;LogParser&lt;/strong&gt; results. We’re going to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PowerShell Proxy function&lt;/code&gt; of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ConvertTo-Html&lt;/code&gt; cmdlet and name it as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Export-Html&lt;/code&gt; and add add in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;BootStrap&lt;/code&gt; URI to make the report prettier.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script src=&quot;https://gist.github.com/hkarthik7/7579bf8e71b9256ad893d9c04494fa9f.js&quot;&gt;&lt;/script&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Export the results to report&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nf&quot;&gt;LogParser&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;|&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Export-Html&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-FilePath&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;$PWD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;Path&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;\Report.html&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;`
+&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Head&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;ERROR CODE DETAILS&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;se&quot;&gt;`
+&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-PreContent&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SERVER/BROWSER ERRORs&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Here is the complete script to incorporate in the pipeline.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;script src=&quot;https://gist.github.com/hkarthik7/7ef69d558a6132adf9879b2f84969b05.js&quot;&gt;&lt;/script&gt;
+
+&lt;h3 id=&quot;setup-ci-pipeline-in-azure-devops&quot;&gt;Setup CI pipeline in Azure DevOps&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Navigate to Pipelines section and click on &lt;strong&gt;New pipeline&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L1.PNG&quot; alt=&quot;L1&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Click on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Use the classic editor&lt;/code&gt; at the bottom and select the source code repository where you have placed the script (You can opt to create YAML CI also).
+In this example I’ve chosen Azure Repos Git as my source code repository.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L2.PNG&quot; alt=&quot;L2&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Click on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Empty job&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L3.PNG&quot; alt=&quot;L3&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Rename the pipeline of your choice.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L4.PNG&quot; alt=&quot;L4&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;As mentioned earlier we’re going to divide our requirement into two sections in the pipeline. To achieve this we’ve to add two tasks
+    &lt;ol&gt;
+      &lt;li&gt;Data extraction (download the logs)&lt;/li&gt;
+      &lt;li&gt;Data analysis and visualisation (Parse and generate report)&lt;/li&gt;
+    &lt;/ol&gt;
+
+    &lt;p&gt;We will add two &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Azure Powershell&lt;/code&gt; tasks to separate the concerns.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;First task is to download the logs, so we need to run &lt;strong&gt;Export-AzureWebAppLogFiles&lt;/strong&gt; to achieve this. Copy the function to a script file and point the path in the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Azure Powershell&lt;/code&gt; task. Make sure to rename the task, select the appropriate subscription where your webapp is created, script file path and the version of PowerShell you would like to use (set it to latest).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L5.PNG&quot; alt=&quot;L5&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Similarly fill in the details in next &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Azure Powershell&lt;/code&gt; which is to parse the logs and generate report&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L6.PNG&quot; alt=&quot;L6&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Copy Files&lt;/code&gt; task to copy the downloaded &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;logs&lt;/code&gt; and generated &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;html&lt;/code&gt; report to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Staging Directory&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L7.PNG&quot; alt=&quot;L7&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Once the files are copied to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Staging Directory&lt;/code&gt; we can add one more task to publish it to the artifact to download the report.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L8.PNG&quot; alt=&quot;L8&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Now, click on &lt;strong&gt;Save &amp;amp; queue&lt;/strong&gt; to save the changes and trigger the pipeline.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;download-report&quot;&gt;Download report&lt;/h3&gt;
+
+&lt;p&gt;Once the pipeline ran successfully, click on the job to view the summary. You can download the report from the published artifact by clicking the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Report.html&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/media/LogParser/L9.PNG&quot; alt=&quot;L9&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;closing&quot;&gt;Closing&lt;/h3&gt;
+
+&lt;p&gt;There are few ways to download and analyse the logs and one such way is using the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Azure DevOps&lt;/code&gt; CI pipeline, you can also use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Azure Automation Account&lt;/code&gt; to achieve this and place your report in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Storage Account&lt;/code&gt;. Then it can be shared with anyone to download from the blob container or view the report by sharing the URL  after enabling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Static Site Content&lt;/code&gt; for that &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Storage Account&lt;/code&gt;. Make sure to tweak the script accordingly if the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http logs&lt;/code&gt; headers are different in your environment. Happy scripting.&lt;/p&gt;
+</description>
+				<pubDate>Sat, 16 Jan 2021 00:00:00 +0000</pubDate>
+				<link>/azure%20devops/powershell/azure/2021/01/16/Parse-http-logs-of-Azure-webapp-using-Azure-DevOps-CI-pipeline.html</link>
+				<guid isPermaLink="true">/azure%20devops/powershell/azure/2021/01/16/Parse-http-logs-of-Azure-webapp-using-Azure-DevOps-CI-pipeline.html</guid>
+			</item>
+		
+			<item>
 				<title>Meet azd - a java library to manage Azure DevOps API</title>
 				<description>&lt;p&gt;Working with APIs has never been easier without client libraries. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Postman&lt;/code&gt; is the saviour for most of the API calls, however a client library is required for automation, to include it as dependencies in our project and work on ease with a vast REST API. &lt;strong&gt;Azure DevOps&lt;/strong&gt; REST API is no exemption due to its vastness.&lt;/p&gt;
 
@@ -198,9 +335,14 @@
 &lt;h3 id=&quot;closing&quot;&gt;Closing&lt;/h3&gt;
 
 &lt;p&gt;&lt;strong&gt;azd&lt;/strong&gt; is a open source project and you can find the source code in &lt;a href=&quot;https://github.com/hkarthik7/azure-devops-java-sdk&quot;&gt;github&lt;/a&gt;.&lt;/p&gt;
+
 &lt;ul&gt;
-  &lt;li&gt;Issues/bugs can be reported &lt;a href=&quot;https://github.com/hkarthik7/azure-devops-java-sdk/blob/main/.github/ISSUE_TEMPLATE.md&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
-  &lt;li&gt;Contributions are welcome, goal of this project is to make it more reliable and useful for everyone. See &lt;a href=&quot;https://github.com/hkarthik7/azure-devops-java-sdk/blob/main/.github/CONTRIBUTING.md&quot;&gt;contribution guidelines&lt;/a&gt; for more details.&lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Issues/bugs can be reported &lt;a href=&quot;https://github.com/hkarthik7/azure-devops-java-sdk/blob/main/.github/ISSUE_TEMPLATE.md&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Contributions are welcome, goal of this project is to make it more reliable and useful for everyone. See &lt;a href=&quot;https://github.com/hkarthik7/azure-devops-java-sdk/blob/main/.github/CONTRIBUTING.md&quot;&gt;contribution guidelines&lt;/a&gt; for more details.&lt;/p&gt;
+  &lt;/li&gt;
 &lt;/ul&gt;
 </description>
 				<pubDate>Fri, 04 Dec 2020 00:00:00 +0000</pubDate>

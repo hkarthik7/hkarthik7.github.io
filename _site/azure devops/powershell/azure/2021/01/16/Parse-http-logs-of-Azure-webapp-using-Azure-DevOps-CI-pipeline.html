@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Create a CI pipeline to parse http logs of Azure app service</title>
+	
+	<meta name="description" content="Create a CI pipeline in Azure DevOps and use PowerShell to parse http logs of Azure App service">
+	
+	<meta name="author" content="Harish Karthic">
+
+	<!-- Enable responsive viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-site-verification" content="OtiazpwYWB3A71Cr0WkitUPn7iH86UVsbq0zCDK2Aec" />
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Le styles -->
+	<link href="/assets/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/assets/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/assets/resources/syntax/syntax.css" rel="stylesheet">
+	<link href="/assets/css/style.css" rel="stylesheet">
+
+	<!-- Le fav and touch icons -->
+	<!-- Update these with your own images
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+	-->
+	<link rel="shortcut icon" href="https://i1.wp.com/thehappymarriage.com.au/wp-content/uploads/2016/07/favicon-H-white.png?ssl=1">
+
+	<link rel="alternate" type="application/rss+xml" title="" href="/sitemap.xml">
+</head>
+
+<body>
+	<nav class="navbar navbar-default visible-xs" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+			<a type="button" class="navbar-toggle nav-link" href="http://github.com/hkarthik7">
+				<i class="fa fa-github"></i>
+			</a>
+			
+			
+			
+			<a type="button" class="navbar-toggle nav-link" href="mailto:hkarthicb@gmail.com">
+				<i class="fa fa-envelope"></i>
+			</a>
+			
+			<a class="navbar-brand" href="/">
+				<img src="/assets/ico/harish-karthic.jpg" class="img-circle" />
+				Harish Karthic
+			</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/">Home</a></li>
+				<li><a href="/categories.html">Categories</a></li>
+				<li><a href="/tags.html">Tags</a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</nav>
+
+	<!-- nav-menu-dropdown -->
+	<div class="btn-group hidden-xs" id="nav-menu">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-bars"></i>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+			<li><a href="/categories.html"><i class="fa fa-folder"></i>Categories</a></li>
+			<li><a href="/tags.html"><i class="fa fa-tags"></i>Tags</a></li>
+			<li class="divider"></li>
+			<li><a href="#"><i class="fa fa-arrow-up"></i>Top of Page</a></li>
+		</ul>
+	</div>
+
+	<div class="col-sm-3 sidebar hidden-xs" style="">
+		<!-- sidebar.html -->
+<header class="sidebar-header" role="banner">
+	<a href="/">
+		<img src="/assets/ico/harish-karthic.jpg" class="img-circle" />
+	</a>
+	<h3 class="title">
+        <a href="/">Harish Karthic</a>
+    </h3>
+</header>
+
+
+<div id="bio" class="text-center">
+	Azure DevOps Engineer and Automation Enthusiast
+</div>
+
+
+<div id="contact-list" class="text-center">
+	<ul class="list-unstyled list-inline">
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://github.com/hkarthik7">
+				<i class="fa fa-github-alt fa-lg"></i>
+			</a>
+		</li>
+		
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="mailto:hkarthicb@gmail.com">
+				<i class="fa fa-envelope fa-lg"></i>
+			</a>
+		</li>
+		
+	</ul>
+	<ul id="contact-list-secondary" class="list-unstyled list-inline">
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://linkedin.com/in/harish-karthic-b">
+				<i class="fa fa-linkedin fa-lg"></i>
+			</a>
+		</li>
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="/sitemap.xml">
+				<i class="fa fa-rss fa-lg"></i>
+			</a>
+		</li>
+	</ul>
+</div>
+<!-- sidebar.html end -->
+
+	</div>
+
+	<div class="col-sm-9 col-sm-offset-3">
+		<div class="page-header">
+  <h1>Create a CI pipeline to parse http logs of Azure app service </h1>
+</div>
+	
+<article>
+
+	<div class="col-sm-10">
+	 <span class="post-date">
+	   
+	   January 
+	   16th,
+	   
+	   2021
+	 </span>
+	  <div class="article_body">
+	  <p>Sometimes we may need to analyse the <code class="language-plaintext highlighter-rouge">http</code> logs in <code class="language-plaintext highlighter-rouge">Azure WebApp</code> to know the incoming requests and http error codes. Since the logs files usually are overwritten we tend to miss some of the significant logs. We can run query in <strong>Log analytics</strong> workspace and find out most of the details but what if there aren’t any logs that are relevant to the issus that we are looking for is not in log analytics database? this is where we rely on <code class="language-plaintext highlighter-rouge">http</code> logs. Downloading the logs from <strong>SCM</strong> or <strong>KUDU</strong> and analysing each line is a time consuming task and we may miss few log entries too.</p>
+
+<p>This is a tedious task if we have to do it for multiple subscriptions and more frequently. This is where we need automation and our <strong>PowerShell</strong> magic to get the work done for us. We will walk through the script and setup CI pipeline to download and analyse <code class="language-plaintext highlighter-rouge">http</code> logs.</p>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+
+<ol>
+  <li>Script walk through</li>
+  <li>Setup CI pipeline in Azure DevOps</li>
+  <li>Download and view report</li>
+  <li>Closing</li>
+</ol>
+
+<h3 id="script-walk-through">Script walk through</h3>
+
+<p>The requirement is divided into two sections,</p>
+
+<ul>
+  <li>Data extraction</li>
+  <li>Data analysis and visualisation (precisely report generation)</li>
+</ul>
+
+<p>In the data extraction section we download the logs from SCM API and in data analysis section we analyse, segregate the logs and generate the report.</p>
+
+<ul>
+  <li>In the first section we’re fetching the details of web app and publishing profile of that web app, this way we will get the credential to access the SCM API. Once we have necessary details we’re calling the API and downloading the present day’s log(s).</li>
+</ul>
+
+<script src="https://gist.github.com/hkarthik7/1b6a7d3ed5104b872da5a39f56b8edea.js"></script>
+
+<ul>
+  <li>In data analysis, we’re separating out the section that is required. First things first, we’re getting all the files from the current path and skipping first two lines as we don’t want the headers and extracting the needed contents. This script is intended to run in pipeline once the logs are downloaded. Now we can extract the report and save it as <code class="language-plaintext highlighter-rouge">html</code> or <code class="language-plaintext highlighter-rouge">csv</code>.</li>
+</ul>
+
+<script src="https://gist.github.com/hkarthik7/c1ca2e22063b7a0df7e1096447764358.js"></script>
+
+<ul>
+  <li>Generate a html report from the <strong>LogParser</strong> results. We’re going to use <code class="language-plaintext highlighter-rouge">PowerShell Proxy function</code> of <code class="language-plaintext highlighter-rouge">ConvertTo-Html</code> cmdlet and name it as <code class="language-plaintext highlighter-rouge">Export-Html</code> and add add in <code class="language-plaintext highlighter-rouge">BootStrap</code> URI to make the report prettier.</li>
+</ul>
+
+<script src="https://gist.github.com/hkarthik7/7579bf8e71b9256ad893d9c04494fa9f.js"></script>
+
+<ul>
+  <li>Export the results to report</li>
+</ul>
+
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">LogParser</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nf">Export-Html</span><span class="w"> </span><span class="nt">-FilePath</span><span class="w"> </span><span class="s2">"</span><span class="si">$(</span><span class="bp">$PWD</span><span class="o">.</span><span class="nf">Path</span><span class="si">)</span><span class="s2">\Report.html"</span><span class="w"> </span><span class="se">`
+</span><span class="nt">-Head</span><span class="w"> </span><span class="s2">"ERROR CODE DETAILS"</span><span class="w"> </span><span class="se">`
+</span><span class="nt">-PreContent</span><span class="w"> </span><span class="s2">"SERVER/BROWSER ERRORs"</span><span class="w">
+</span></code></pre></div></div>
+
+<ul>
+  <li>Here is the complete script to incorporate in the pipeline.</li>
+</ul>
+
+<script src="https://gist.github.com/hkarthik7/7ef69d558a6132adf9879b2f84969b05.js"></script>
+
+<h3 id="setup-ci-pipeline-in-azure-devops">Setup CI pipeline in Azure DevOps</h3>
+
+<ul>
+  <li>Navigate to Pipelines section and click on <strong>New pipeline</strong></li>
+</ul>
+
+<p><img src="/assets/media/LogParser/L1.PNG" alt="L1" /></p>
+
+<ul>
+  <li>Click on <code class="language-plaintext highlighter-rouge">Use the classic editor</code> at the bottom and select the source code repository where you have placed the script (You can opt to create YAML CI also).
+In this example I’ve chosen Azure Repos Git as my source code repository.</li>
+</ul>
+
+<p><img src="/assets/media/LogParser/L2.PNG" alt="L2" /></p>
+
+<ul>
+  <li>Click on <code class="language-plaintext highlighter-rouge">Empty job</code></li>
+</ul>
+
+<p><img src="/assets/media/LogParser/L3.PNG" alt="L3" /></p>
+
+<ul>
+  <li>Rename the pipeline of your choice.</li>
+</ul>
+
+<p><img src="/assets/media/LogParser/L4.PNG" alt="L4" /></p>
+
+<ul>
+  <li>As mentioned earlier we’re going to divide our requirement into two sections in the pipeline. To achieve this we’ve to add two tasks
+    <ol>
+      <li>Data extraction (download the logs)</li>
+      <li>Data analysis and visualisation (Parse and generate report)</li>
+    </ol>
+
+    <p>We will add two <code class="language-plaintext highlighter-rouge">Azure Powershell</code> tasks to separate the concerns.</p>
+  </li>
+  <li>First task is to download the logs, so we need to run <strong>Export-AzureWebAppLogFiles</strong> to achieve this. Copy the function to a script file and point the path in the <code class="language-plaintext highlighter-rouge">Azure Powershell</code> task. Make sure to rename the task, select the appropriate subscription where your webapp is created, script file path and the version of PowerShell you would like to use (set it to latest).</li>
+</ul>
+
+<p><img src="/assets/media/LogParser/L5.PNG" alt="L5" /></p>
+
+<ul>
+  <li>Similarly fill in the details in next <code class="language-plaintext highlighter-rouge">Azure Powershell</code> which is to parse the logs and generate report</li>
+</ul>
+
+<p><img src="/assets/media/LogParser/L6.PNG" alt="L6" /></p>
+
+<ul>
+  <li>Add <code class="language-plaintext highlighter-rouge">Copy Files</code> task to copy the downloaded <code class="language-plaintext highlighter-rouge">logs</code> and generated <code class="language-plaintext highlighter-rouge">html</code> report to <code class="language-plaintext highlighter-rouge">Staging Directory</code>.</li>
+</ul>
+
+<p><img src="/assets/media/LogParser/L7.PNG" alt="L7" /></p>
+
+<ul>
+  <li>Once the files are copied to <code class="language-plaintext highlighter-rouge">Staging Directory</code> we can add one more task to publish it to the artifact to download the report.</li>
+</ul>
+
+<p><img src="/assets/media/LogParser/L8.PNG" alt="L8" /></p>
+
+<ul>
+  <li>Now, click on <strong>Save &amp; queue</strong> to save the changes and trigger the pipeline.</li>
+</ul>
+
+<h3 id="download-report">Download report</h3>
+
+<p>Once the pipeline ran successfully, click on the job to view the summary. You can download the report from the published artifact by clicking the <code class="language-plaintext highlighter-rouge">Report.html</code>.</p>
+
+<p><img src="/assets/media/LogParser/L9.PNG" alt="L9" /></p>
+
+<h3 id="closing">Closing</h3>
+
+<p>There are few ways to download and analyse the logs and one such way is using the <code class="language-plaintext highlighter-rouge">Azure DevOps</code> CI pipeline, you can also use <code class="language-plaintext highlighter-rouge">Azure Automation Account</code> to achieve this and place your report in <code class="language-plaintext highlighter-rouge">Storage Account</code>. Then it can be shared with anyone to download from the blob container or view the report by sharing the URL  after enabling <code class="language-plaintext highlighter-rouge">Static Site Content</code> for that <code class="language-plaintext highlighter-rouge">Storage Account</code>. Make sure to tweak the script accordingly if the <code class="language-plaintext highlighter-rouge">http logs</code> headers are different in your environment. Happy scripting.</p>
+
+	  </div>
+
+		
+		<ul class="tag_box list-unstyled list-inline">
+		  <li><i class="fa fa-folder-open"></i></li>
+		  
+		  
+			 
+				<li><a href="/categories.html#Azure DevOps-ref">
+					Azure DevOps <span>(5)</span>
+					,
+				</a></li>
+			 
+				<li><a href="/categories.html#PowerShell-ref">
+					PowerShell <span>(3)</span>
+					,
+				</a></li>
+			 
+				<li><a href="/categories.html#Azure-ref">
+					Azure <span>(1)</span>
+					
+				</a></li>
+			
+		  
+		</ul>
+		  
+
+		
+		<ul class="list-inline">
+		  <li><i class="fa fa-tags"></i></li>
+		  
+		  
+			 
+				<li>
+					<a href="/tags.html#Azure DevOps-ref">
+					Azure DevOps <span>(5)</span>
+					,
+					</a>
+				</li>
+			 
+				<li>
+					<a href="/tags.html#PowerShell-ref">
+					PowerShell <span>(5)</span>
+					,
+					</a>
+				</li>
+			 
+				<li>
+					<a href="/tags.html#Azure-ref">
+					Azure <span>(4)</span>
+					,
+					</a>
+				</li>
+			 
+				<li>
+					<a href="/tags.html#App Service-ref">
+					App Service <span>(1)</span>
+					,
+					</a>
+				</li>
+			 
+				<li>
+					<a href="/tags.html#WebApp-ref">
+					WebApp <span>(1)</span>
+					
+					</a>
+				</li>
+			
+		  
+		  
+		</ul>
+		  
+
+		<hr>
+
+		<div>
+      <section class="share col-sm-6">
+        <h4 class="section-title">Share Post</h4>
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=Create a CI pipeline to parse http logs of Azure app service"
+           onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <i class="fa fa-twitter fa-lg"></i>
+          Twitter
+        </a>
+        <a class="btn btn-default btn-sm facebook" href="https://www.facebook.com/sharer/sharer.php"
+           onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <i class="fa fa-facebook fa-lg"></i>
+          Facebook
+        </a>
+        <!-- <a class="btn btn-default btn-sm gplus"
+           onclick="window.open('https://plus.google.com/share?url='+window.location.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <i class="fa fa-google-plus fa-lg"></i>
+          Google+
+        </a> -->
+      </section>
+
+      <section class="col-sm-6 author">
+        <!-- <img src="/assets/ico/harish-karthic.jpg" class="img-rounded author-image" /> -->
+        <h4 class="section-title author-name">Harish Karthic</h4>
+        <p class="author-bio">Azure DevOps Engineer and Automation Enthusiast</p>
+      </section>
+    </div>
+
+    <div class="clearfix"></div>
+
+		<ul class="pager">
+		  
+		  <li class="previous"><a href="/azure%20devops/2020/12/04/AzureDevOpsJavaSDK.html" title="Meet azd - a java library to manage Azure DevOps API">&larr; Previous</a></li>
+		  
+		  
+			<li class="next disabled"><a>Next &rarr;</a>
+		  
+		</ul>
+
+		<hr>
+	</div>
+	
+	<div class="col-sm-2 sidebar-2">
+	
+	</div>
+</article>
+<div class="clearfix"></div>
+
+
+
+
+
+		<footer>
+			<hr/>
+			<!-- <p class="text-muted" style="padding-left: 600px;">
+				&copy; 2021 Harish Karthic
+			</p>
+			<span class="text-muted" style="padding-left: 600px;">Theme by debyll - Jekyll</span> -->
+			<p class="text-muted">
+				&copy; 2021 Harish Karthic
+			</p>
+			<span class="text-muted">Theme by debyll - Jekyll</span>
+		</footer>
+	</div>
+
+	<script type="text/javascript" src="/assets/resources/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/js/app.js"></script>
+</body>
+</html>
+
+
+
