@@ -26,9 +26,18 @@ You can install the library from [github release page](https://github.com/hkarth
 It is easy to include in your `maven` project too. You can specify the latest version in your pom.xml file when you include `azd` in your project.
 
 ```xml
-<groupId>org.azd</groupId>
+<groupId>io.github.hkarthik7</groupId>
 <artifactId>azd</artifactId>
 <version>${latest version}</version>
+```
+
+Add java docs
+
+```xml
+<groupId>io.github.hkarthik7</groupId>
+<artifactId>azd</artifactId>
+<version>${latest version}</version>
+<classifier>javadoc</classifier>
 ```
 
 ### Getting Started
@@ -57,7 +66,7 @@ public class Main {
         AzDDefaultParameters defaultParameters = new AzDDefaultParameters(organization, personalAccessToken);
 
         // call API with the default parameters;
-        Core core = new Core(defaultParameters);
+        CoreApi core = new CoreApi(defaultParameters);
         try {
             // get the list of projects
             core.getProjects();
@@ -91,7 +100,7 @@ public class Main {
         AzDDefaultParameters defaultParameters = new AzDDefaultParameters(organization, project, personalAccessToken);
 
         // call API with the default parameters;
-        FeedManagement feedManagement = new FeedManagement(defaultParameters);
+        FeedManagementApi feedManagement = new FeedManagementApi(defaultParameters);
         try {
             // create new feed
             feedManagement.createFeed("myFeed", "To store maven packages", true, true);
@@ -148,7 +157,7 @@ public class Main {
         AzDDefaultParameters defaultParameters = new AzDDefaultParameters(organization, project, personalAccessToken);
 
         // call API with the default parameters;
-        Build build = new Build(defaultParameters);
+        BuildApi build = new BuildApi(defaultParameters);
         try {
 
             // delete a build by id
