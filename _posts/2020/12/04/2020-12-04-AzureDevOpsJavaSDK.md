@@ -50,7 +50,7 @@ Provided that you have your `personal access token` with you by now, let's explo
 
 ### Examples
 
-- Before calling any methods/functions in the class you must instantiate the `AzDDefaultParameters` with `organization name`, `project name` and `personal access token`. However `project name` is not mandatory and you can always set it whenever required.
+- Before calling any methods in the library you should create a connection object using `Connection` class with `organization name`, `project name` and `personal access token`. However `project name` is not mandatory and you can always set it whenever required.
 
 Setting these as defaults allows you to pass it's instances to all the classes you call in the library.
 
@@ -62,11 +62,11 @@ public class Main {
         String organization = "myOrganizationName";
         String personalAccessToken = "accessToken";
 
-        // instantiate AzDDefaultParameters with organization name, project and personal access token.
-        AzDDefaultParameters defaultParameters = new AzDDefaultParameters(organization, personalAccessToken);
+        // Create a Connection object with organization name, project and personal access token.
+        var connection = new Connection(organization, personalAccessToken);
 
         // call API with the default parameters;
-        CoreApi core = new CoreApi(defaultParameters);
+        CoreApi core = new CoreApi(connection);
         try {
             // get the list of projects
             core.getProjects();
@@ -79,7 +79,7 @@ public class Main {
 
             // list all the teams
             core.getTeams();
-        } catch (IOException | DefaultParametersException e1) {
+        } catch (ConnectionException | AzDException e1) {
             e1.printStackTrace();
         }
     }
@@ -96,11 +96,11 @@ public class Main {
         String project = "myProject";
         String personalAccessToken = "accessToken";
 
-        // instantiate AzDDefaultParameters with organization name, project and personal access token.
-        AzDDefaultParameters defaultParameters = new AzDDefaultParameters(organization, project, personalAccessToken);
+        // Create a Connection object with organization name, project and personal access token.
+        var connection = new Connection(organization, project, personalAccessToken);
 
         // call API with the default parameters;
-        FeedManagementApi feedManagement = new FeedManagementApi(defaultParameters);
+        FeedManagementApi feedManagement = new FeedManagementApi(connection);
         try {
             // create new feed
             feedManagement.createFeed("myFeed", "To store maven packages", true, true);
@@ -136,7 +136,7 @@ public class Main {
             // update the existing feed;
             feedManagement.updateFeed("myFeed", true, "My new feed", true, true);
         }
-        catch (DefaultParametersException | IOException e1) {
+        catch (ConnectionException | AzDException e1) {
             e1.printStackTrace();
         }
     }
@@ -153,11 +153,11 @@ public class Main {
         String project = "myProject";
         String personalAccessToken = "accessToken";
 
-        // instantiate AzDDefaultParameters with organization name, project and personal access token.
-        AzDDefaultParameters defaultParameters = new AzDDefaultParameters(organization, project, personalAccessToken);
+        // Create a Connection object with organization name, project and personal access token.
+        var connection = new Connection(organization, project, personalAccessToken);
 
         // call API with the default parameters;
-        BuildApi build = new BuildApi(defaultParameters);
+        BuildApi build = new BuildApi(connection);
         try {
 
             // delete a build by id
@@ -184,10 +184,10 @@ public class Main {
             // list all builds and filter a particular id
             build.getBuilds().getBuildResults().stream().filter(id -> id.getId() == 22).forEach(System.out::println);
 
-            // queue a build with pipeline/definition name
-            build.queueBuild("java-project-CI");
+            // queue a build with pipeline/definition id
+            build.queueBuild(12);
 
-        } catch (DefaultParametersException | IOException e) {
+        } catch (ConnectionException | AzDException e) {
             e.printStackTrace();
         }
     }

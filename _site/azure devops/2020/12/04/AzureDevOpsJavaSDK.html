@@ -178,9 +178,17 @@
 
 <p>It is easy to include in your <code class="language-plaintext highlighter-rouge">maven</code> project too. You can specify the latest version in your pom.xml file when you include <code class="language-plaintext highlighter-rouge">azd</code> in your project.</p>
 
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;groupId&gt;</span>org.azd<span class="nt">&lt;/groupId&gt;</span>
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;groupId&gt;</span>io.github.hkarthik7<span class="nt">&lt;/groupId&gt;</span>
 <span class="nt">&lt;artifactId&gt;</span>azd<span class="nt">&lt;/artifactId&gt;</span>
 <span class="nt">&lt;version&gt;</span>${latest version}<span class="nt">&lt;/version&gt;</span>
+</code></pre></div></div>
+
+<p>Add java docs</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;groupId&gt;</span>io.github.hkarthik7<span class="nt">&lt;/groupId&gt;</span>
+<span class="nt">&lt;artifactId&gt;</span>azd<span class="nt">&lt;/artifactId&gt;</span>
+<span class="nt">&lt;version&gt;</span>${latest version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;classifier&gt;</span>javadoc<span class="nt">&lt;/classifier&gt;</span>
 </code></pre></div></div>
 
 <h3 id="getting-started">Getting Started</h3>
@@ -194,7 +202,7 @@
 <h3 id="examples">Examples</h3>
 
 <ul>
-  <li>Before calling any methods/functions in the class you must instantiate the <code class="language-plaintext highlighter-rouge">AzDDefaultParameters</code> with <code class="language-plaintext highlighter-rouge">organization name</code>, <code class="language-plaintext highlighter-rouge">project name</code> and <code class="language-plaintext highlighter-rouge">personal access token</code>. However <code class="language-plaintext highlighter-rouge">project name</code> is not mandatory and you can always set it whenever required.</li>
+  <li>Before calling any methods in the library you should create a connection object using <code class="language-plaintext highlighter-rouge">Connection</code> class with <code class="language-plaintext highlighter-rouge">organization name</code>, <code class="language-plaintext highlighter-rouge">project name</code> and <code class="language-plaintext highlighter-rouge">personal access token</code>. However <code class="language-plaintext highlighter-rouge">project name</code> is not mandatory and you can always set it whenever required.</li>
 </ul>
 
 <p>Setting these as defaults allows you to pass it’s instances to all the classes you call in the library.</p>
@@ -208,11 +216,11 @@
         <span class="nc">String</span> <span class="n">organization</span> <span class="o">=</span> <span class="s">"myOrganizationName"</span><span class="o">;</span>
         <span class="nc">String</span> <span class="n">personalAccessToken</span> <span class="o">=</span> <span class="s">"accessToken"</span><span class="o">;</span>
 
-        <span class="c1">// instantiate AzDDefaultParameters with organization name, project and personal access token.</span>
-        <span class="nc">AzDDefaultParameters</span> <span class="n">defaultParameters</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AzDDefaultParameters</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
+        <span class="c1">// Create a Connection object with organization name, project and personal access token.</span>
+        <span class="kt">var</span> <span class="n">connection</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Connection</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
 
         <span class="c1">// call API with the default parameters;</span>
-        <span class="nc">Core</span> <span class="n">core</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Core</span><span class="o">(</span><span class="n">defaultParameters</span><span class="o">);</span>
+        <span class="nc">CoreApi</span> <span class="n">core</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CoreApi</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
         <span class="k">try</span> <span class="o">{</span>
             <span class="c1">// get the list of projects</span>
             <span class="n">core</span><span class="o">.</span><span class="na">getProjects</span><span class="o">();</span>
@@ -225,7 +233,7 @@
 
             <span class="c1">// list all the teams</span>
             <span class="n">core</span><span class="o">.</span><span class="na">getTeams</span><span class="o">();</span>
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">IOException</span> <span class="o">|</span> <span class="nc">DefaultParametersException</span> <span class="n">e1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">ConnectionException</span> <span class="o">|</span> <span class="nc">AzDException</span> <span class="n">e1</span><span class="o">)</span> <span class="o">{</span>
             <span class="n">e1</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
         <span class="o">}</span>
     <span class="o">}</span>
@@ -243,11 +251,11 @@
         <span class="nc">String</span> <span class="n">project</span> <span class="o">=</span> <span class="s">"myProject"</span><span class="o">;</span>
         <span class="nc">String</span> <span class="n">personalAccessToken</span> <span class="o">=</span> <span class="s">"accessToken"</span><span class="o">;</span>
 
-        <span class="c1">// instantiate AzDDefaultParameters with organization name, project and personal access token.</span>
-        <span class="nc">AzDDefaultParameters</span> <span class="n">defaultParameters</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AzDDefaultParameters</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
+        <span class="c1">// Create a Connection object with organization name, project and personal access token.</span>
+        <span class="kt">var</span> <span class="n">connection</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Connection</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
 
         <span class="c1">// call API with the default parameters;</span>
-        <span class="nc">FeedManagement</span> <span class="n">feedManagement</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FeedManagement</span><span class="o">(</span><span class="n">defaultParameters</span><span class="o">);</span>
+        <span class="nc">FeedManagementApi</span> <span class="n">feedManagement</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FeedManagementApi</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
         <span class="k">try</span> <span class="o">{</span>
             <span class="c1">// create new feed</span>
             <span class="n">feedManagement</span><span class="o">.</span><span class="na">createFeed</span><span class="o">(</span><span class="s">"myFeed"</span><span class="o">,</span> <span class="s">"To store maven packages"</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
@@ -283,7 +291,7 @@
             <span class="c1">// update the existing feed;</span>
             <span class="n">feedManagement</span><span class="o">.</span><span class="na">updateFeed</span><span class="o">(</span><span class="s">"myFeed"</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="s">"My new feed"</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
         <span class="o">}</span>
-        <span class="k">catch</span> <span class="o">(</span><span class="nc">DefaultParametersException</span> <span class="o">|</span> <span class="nc">IOException</span> <span class="n">e1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">catch</span> <span class="o">(</span><span class="nc">ConnectionException</span> <span class="o">|</span> <span class="nc">AzDException</span> <span class="n">e1</span><span class="o">)</span> <span class="o">{</span>
             <span class="n">e1</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
         <span class="o">}</span>
     <span class="o">}</span>
@@ -301,11 +309,11 @@
         <span class="nc">String</span> <span class="n">project</span> <span class="o">=</span> <span class="s">"myProject"</span><span class="o">;</span>
         <span class="nc">String</span> <span class="n">personalAccessToken</span> <span class="o">=</span> <span class="s">"accessToken"</span><span class="o">;</span>
 
-        <span class="c1">// instantiate AzDDefaultParameters with organization name, project and personal access token.</span>
-        <span class="nc">AzDDefaultParameters</span> <span class="n">defaultParameters</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AzDDefaultParameters</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
+        <span class="c1">// Create a Connection object with organization name, project and personal access token.</span>
+        <span class="kt">var</span> <span class="n">connection</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Connection</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
 
         <span class="c1">// call API with the default parameters;</span>
-        <span class="nc">Build</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Build</span><span class="o">(</span><span class="n">defaultParameters</span><span class="o">);</span>
+        <span class="nc">BuildApi</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BuildApi</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
         <span class="k">try</span> <span class="o">{</span>
 
             <span class="c1">// delete a build by id</span>
@@ -332,10 +340,10 @@
             <span class="c1">// list all builds and filter a particular id</span>
             <span class="n">build</span><span class="o">.</span><span class="na">getBuilds</span><span class="o">().</span><span class="na">getBuildResults</span><span class="o">().</span><span class="na">stream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">id</span> <span class="o">-&gt;</span> <span class="n">id</span><span class="o">.</span><span class="na">getId</span><span class="o">()</span> <span class="o">==</span> <span class="mi">22</span><span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
 
-            <span class="c1">// queue a build with pipeline/definition name</span>
-            <span class="n">build</span><span class="o">.</span><span class="na">queueBuild</span><span class="o">(</span><span class="s">"java-project-CI"</span><span class="o">);</span>
+            <span class="c1">// queue a build with pipeline/definition id</span>
+            <span class="n">build</span><span class="o">.</span><span class="na">queueBuild</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
 
-        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">DefaultParametersException</span> <span class="o">|</span> <span class="nc">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">ConnectionException</span> <span class="o">|</span> <span class="nc">AzDException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
             <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
         <span class="o">}</span>
     <span class="o">}</span>
