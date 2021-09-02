@@ -46,11 +46,11 @@ Before getting started you are going to need `personal access token` to authenti
 
 Provided that you have your `personal access token` with you by now, let's explore the usage of the library.
 
-**azd** depends on `com.fasterxml.jackson.core` to output the API response as `java` object.
+**azd** depends on `com.fasterxml.jackson.core` to deserialize the API response as `java` object.
 
 ### Examples
 
-- Before calling any methods in the library you should create a connection object using `Connection` class with `organization name`, `project name` and `personal access token`. However `project name` is not mandatory and you can always set it whenever required.
+- Before calling any methods in the library you should create a connection object using `AzDClientApi` class with `organization name`, `project name` and `personal access token`. However `project name` is not mandatory and you can always set it whenever required.
 
 Setting these as defaults allows you to pass it's instances to all the classes you call in the library.
 
@@ -62,11 +62,11 @@ public class Main {
         String organization = "myOrganizationName";
         String personalAccessToken = "accessToken";
 
-        // Create a Connection object with organization name, project and personal access token.
-        var connection = new Connection(organization, personalAccessToken);
+        // Connect Azure DevOps API with organization name and personal access token.
+        var webApi = new AzDClientApi(organization, personalAccessToken);
 
-        // call API with the default parameters;
-        CoreApi core = new CoreApi(connection);
+        // call the respective API with created webApi client connection object;
+        var core = webApi.getCoreApi();
         try {
             // get the list of projects
             core.getProjects();
@@ -96,11 +96,11 @@ public class Main {
         String project = "myProject";
         String personalAccessToken = "accessToken";
 
-        // Create a Connection object with organization name, project and personal access token.
-        var connection = new Connection(organization, project, personalAccessToken);
+        // Connect Azure DevOps API with organization name and personal access token.
+        var webApi = new AzDClientApi(organization, project, personalAccessToken);
 
-        // call API with the default parameters;
-        FeedManagementApi feedManagement = new FeedManagementApi(connection);
+        // call the respective API with created webApi client connection object;
+        var feedManagement = webApi.getFeedManagementApi();
         try {
             // create new feed
             feedManagement.createFeed("myFeed", "To store maven packages", true, true);
@@ -153,11 +153,11 @@ public class Main {
         String project = "myProject";
         String personalAccessToken = "accessToken";
 
-        // Create a Connection object with organization name, project and personal access token.
-        var connection = new Connection(organization, project, personalAccessToken);
+        // Connect Azure DevOps API with organization name and personal access token.
+        var webApi = new AzDClientApi(organization, project, personalAccessToken);
 
-        // call API with the default parameters;
-        BuildApi build = new BuildApi(connection);
+        // call the respective API with created webApi client connection object;
+        var build = webApi.getBuildApi();
         try {
 
             // delete a build by id
