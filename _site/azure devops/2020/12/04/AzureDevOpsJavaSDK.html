@@ -197,12 +197,12 @@
 
 <p>Provided that you have your <code class="language-plaintext highlighter-rouge">personal access token</code> with you by now, let’s explore the usage of the library.</p>
 
-<p><strong>azd</strong> depends on <code class="language-plaintext highlighter-rouge">com.fasterxml.jackson.core</code> to output the API response as <code class="language-plaintext highlighter-rouge">java</code> object.</p>
+<p><strong>azd</strong> depends on <code class="language-plaintext highlighter-rouge">com.fasterxml.jackson.core</code> to deserialize the API response as <code class="language-plaintext highlighter-rouge">java</code> object.</p>
 
 <h3 id="examples">Examples</h3>
 
 <ul>
-  <li>Before calling any methods in the library you should create a connection object using <code class="language-plaintext highlighter-rouge">Connection</code> class with <code class="language-plaintext highlighter-rouge">organization name</code>, <code class="language-plaintext highlighter-rouge">project name</code> and <code class="language-plaintext highlighter-rouge">personal access token</code>. However <code class="language-plaintext highlighter-rouge">project name</code> is not mandatory and you can always set it whenever required.</li>
+  <li>Before calling any methods in the library you should create a connection object using <code class="language-plaintext highlighter-rouge">AzDClientApi</code> class with <code class="language-plaintext highlighter-rouge">organization name</code>, <code class="language-plaintext highlighter-rouge">project name</code> and <code class="language-plaintext highlighter-rouge">personal access token</code>. However <code class="language-plaintext highlighter-rouge">project name</code> is not mandatory and you can always set it whenever required.</li>
 </ul>
 
 <p>Setting these as defaults allows you to pass it’s instances to all the classes you call in the library.</p>
@@ -216,11 +216,11 @@
         <span class="nc">String</span> <span class="n">organization</span> <span class="o">=</span> <span class="s">"myOrganizationName"</span><span class="o">;</span>
         <span class="nc">String</span> <span class="n">personalAccessToken</span> <span class="o">=</span> <span class="s">"accessToken"</span><span class="o">;</span>
 
-        <span class="c1">// Create a Connection object with organization name, project and personal access token.</span>
-        <span class="kt">var</span> <span class="n">connection</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Connection</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
+        <span class="c1">// Connect Azure DevOps API with organization name and personal access token.</span>
+        <span class="kt">var</span> <span class="n">webApi</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AzDClientApi</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
 
-        <span class="c1">// call API with the default parameters;</span>
-        <span class="nc">CoreApi</span> <span class="n">core</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">CoreApi</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+        <span class="c1">// call the respective API with created webApi client connection object;</span>
+        <span class="kt">var</span> <span class="n">core</span> <span class="o">=</span> <span class="n">webApi</span><span class="o">.</span><span class="na">getCoreApi</span><span class="o">();</span>
         <span class="k">try</span> <span class="o">{</span>
             <span class="c1">// get the list of projects</span>
             <span class="n">core</span><span class="o">.</span><span class="na">getProjects</span><span class="o">();</span>
@@ -251,11 +251,11 @@
         <span class="nc">String</span> <span class="n">project</span> <span class="o">=</span> <span class="s">"myProject"</span><span class="o">;</span>
         <span class="nc">String</span> <span class="n">personalAccessToken</span> <span class="o">=</span> <span class="s">"accessToken"</span><span class="o">;</span>
 
-        <span class="c1">// Create a Connection object with organization name, project and personal access token.</span>
-        <span class="kt">var</span> <span class="n">connection</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Connection</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
+        <span class="c1">// Connect Azure DevOps API with organization name and personal access token.</span>
+        <span class="kt">var</span> <span class="n">webApi</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AzDClientApi</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
 
-        <span class="c1">// call API with the default parameters;</span>
-        <span class="nc">FeedManagementApi</span> <span class="n">feedManagement</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">FeedManagementApi</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+        <span class="c1">// call the respective API with created webApi client connection object;</span>
+        <span class="kt">var</span> <span class="n">feedManagement</span> <span class="o">=</span> <span class="n">webApi</span><span class="o">.</span><span class="na">getFeedManagementApi</span><span class="o">();</span>
         <span class="k">try</span> <span class="o">{</span>
             <span class="c1">// create new feed</span>
             <span class="n">feedManagement</span><span class="o">.</span><span class="na">createFeed</span><span class="o">(</span><span class="s">"myFeed"</span><span class="o">,</span> <span class="s">"To store maven packages"</span><span class="o">,</span> <span class="kc">true</span><span class="o">,</span> <span class="kc">true</span><span class="o">);</span>
@@ -309,11 +309,11 @@
         <span class="nc">String</span> <span class="n">project</span> <span class="o">=</span> <span class="s">"myProject"</span><span class="o">;</span>
         <span class="nc">String</span> <span class="n">personalAccessToken</span> <span class="o">=</span> <span class="s">"accessToken"</span><span class="o">;</span>
 
-        <span class="c1">// Create a Connection object with organization name, project and personal access token.</span>
-        <span class="kt">var</span> <span class="n">connection</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Connection</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
+        <span class="c1">// Connect Azure DevOps API with organization name and personal access token.</span>
+        <span class="kt">var</span> <span class="n">webApi</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AzDClientApi</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">personalAccessToken</span><span class="o">);</span>
 
-        <span class="c1">// call API with the default parameters;</span>
-        <span class="nc">BuildApi</span> <span class="n">build</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">BuildApi</span><span class="o">(</span><span class="n">connection</span><span class="o">);</span>
+        <span class="c1">// call the respective API with created webApi client connection object;</span>
+        <span class="kt">var</span> <span class="n">build</span> <span class="o">=</span> <span class="n">webApi</span><span class="o">.</span><span class="na">getBuildApi</span><span class="o">();</span>
         <span class="k">try</span> <span class="o">{</span>
 
             <span class="c1">// delete a build by id</span>
