@@ -157,9 +157,9 @@
 	   2021
 	 </span>
 	  <div class="article_body">
-	  <p>Managing secrets can be a hassle and especially saving the logins in excel or sticky notes for quick and easy access is vulnerable. It can be exposed anytime without our knowledge. Won’t it be good if we can have our own personal vault? A goto place to store all the credentials and access it whenever needed. Being a PowerShell lover the first thing that arouse in mind was to create a module to manage the secrets locally. Thus, <strong>PersonalVault</strong> was created.</p>
+	  <p>Managing secrets can be a hassle and especially saving the logins in excel or sticky notes for quick and easy access is vulnerable. They can be exposed anytime without our knowledge. Won’t it be good if we can have our own personal vault? A goto place to store all the credentials and access them whenever needed. Being a PowerShell lover the first thing that aroused in my mind was to create a module to manage the secrets locally. Thus, <strong>PersonalVault</strong> was created.</p>
 
-<p><strong>PersonalVault</strong> is a PowerShell module to store our credentials <strong>locally</strong> that we use regularly. It could be anything, starting from bit locker login to bank credentials all the secrets can be encrypted and stored reliably in our system. <strong>PersonalVault</strong> uses PowerShell’s inbuilt security mechanism and a 32 bit key to encrypt and store the credentials <strong>locally</strong>. We can add, update, get and delete the secrets once we’ve connected to the vault. We can export all our secrets and logins that we use for our day-to-day activities and save it to our vault on ease.</p>
+<p><strong>PersonalVault</strong> is a PowerShell module to store our credentials that we use regularly, <strong>locally</strong>. It could be anything, starting from bit locker login to bank credentials all the secrets can be encrypted and stored reliably in our system. <strong>PersonalVault</strong> uses PowerShell’s inbuilt security mechanism and a 32 bit key to encrypt and store the credentials <strong>locally</strong>. We can add, update, get and delete the secrets once we’ve connected to the vault. We can export all our secrets and logins that we use for our day-to-day activities and save them to our vault at ease.</p>
 
 <h2 id="table-of-contents">Table Of Contents</h2>
 
@@ -213,21 +213,21 @@ Once you’ve registered, connect to the vault.</p>
 </span><span class="nf">testuser</span><span class="w"> </span><span class="nx">System.Security.SecureString</span><span class="w"> </span><span class="nx">PersonalVault</span><span class="w"> </span><span class="nx">C:\Users\testuser\.cos_testuser\connection.clixml</span><span class="w">
 </span></code></pre></div></div>
 
-<p>Once you’ve successfully connected to the vault you get a connection object. The connection file path is where the registered credential are saved. You can overwrite it using <em>Force</em> parameter in <strong>Register-PSPersonalVault</strong> cmdlet. You can also remove the connection to the vault and re-register it. But to perform all these actions you should register first.</p>
+<p>Once you’ve successfully connected to the vault you get a connection object. The connection file path is where the registered credential is saved. You can overwrite it using <em>Force</em> parameter in <strong>Register-PSPersonalVault</strong> cmdlet. You can also remove the connection to the vault and re-register it. But to perform all these actions you should register first.</p>
 
 <p>Now that we have connected to the vault, let’s add a secret to it.</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Add-PSSecret</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="s2">"testuser@gmail.com"</span><span class="w"> </span><span class="nt">-Value</span><span class="w"> </span><span class="s2">"mysecretvalue"</span><span class="w"> </span><span class="nt">-Metadata</span><span class="w"> </span><span class="s2">"My gmail user account"</span><span class="w">
 </span></code></pre></div></div>
 
-<p><strong>PersonalVault</strong> validates the secret value before adding to the vault and warns if it was hacked.</p>
+<p><strong>PersonalVault</strong> validates the secret value before adding it to the vault and warns if it was hacked.</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Add-PSSecret</span><span class="w"> </span><span class="nt">-Name</span><span class="w"> </span><span class="s2">"testuser1@gmail.com"</span><span class="w"> </span><span class="nt">-Value</span><span class="w"> </span><span class="s2">"Password@123"</span><span class="w"> </span><span class="nt">-Metadata</span><span class="w"> </span><span class="s2">"My another gmail user account"</span><span class="w">
 
 </span><span class="nf">WARNING:</span><span class="w"> </span><span class="nx">Secret</span><span class="w"> </span><span class="s1">'Password@123'</span><span class="w"> </span><span class="nx">was</span><span class="w"> </span><span class="nx">hacked</span><span class="w"> </span><span class="nx">2448</span><span class="w"> </span><span class="nx">time</span><span class="p">(</span><span class="nf">s</span><span class="p">);</span><span class="w"> </span><span class="nf">Consider</span><span class="w"> </span><span class="nx">changing</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">secret</span><span class="w"> </span><span class="nx">value.</span><span class="w">
 </span></code></pre></div></div>
 
-<p>List all the stored secrets. Optionally tab complete the names and get the secret value associated to it, either as an encrypted text or as a plain text.</p>
+<p>List all the stored secrets. Optionally, tab complete the names and get the secret value associated to it, either as an encrypted text or as a plain text.</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Get-PSSecret</span><span class="w">
 
@@ -264,8 +264,7 @@ security. To get the secrets you have to use the right key.</p>
 </span><span class="nf">WARNING:</span><span class="w"> </span><span class="nx">Cannot</span><span class="w"> </span><span class="nx">get</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="nx">as</span><span class="w"> </span><span class="nx">plain</span><span class="w"> </span><span class="nx">text</span><span class="p">;</span><span class="w"> </span><span class="nf">Use</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">right</span><span class="w"> </span><span class="nx">key</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">get</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">secret</span><span class="w"> </span><span class="nx">value</span><span class="w"> </span><span class="nx">as</span><span class="w"> </span><span class="nx">plain</span><span class="w"> </span><span class="nx">text.</span><span class="w">
 </span></code></pre></div></div>
 
-<p>You can’t get the secrets because the key that was used to encrypt the secrets was different. You have use the same key to get the secrets as plain text.
-Once you have rotated the key, the old key will be archived so that you can use it to get the secrets.</p>
+<p>For instance in the above example, you can’t get the secrets because the key that was used to encrypt the secrets was different. You have use the same key to get the secrets as plain text. Once you have rotated the key, the old key will be archived so that you can still use it to get the secrets.</p>
 
 <div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">PS</span><span class="w"> </span><span class="nx">C:\</span><span class="err">&gt;</span><span class="w"> </span><span class="nx">Get-PSArchivedKey</span><span class="w">
 

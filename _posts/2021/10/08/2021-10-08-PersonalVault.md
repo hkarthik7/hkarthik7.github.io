@@ -6,9 +6,9 @@ tags: [Personal Vault, PowerShell, Local Key Vault, Secrets Manager]
 description: Store the secrets locally using PersonalVault PowerShell module.
 ---
 
-Managing secrets can be a hassle and especially saving the logins in excel or sticky notes for quick and easy access is vulnerable. It can be exposed anytime without our knowledge. Won't it be good if we can have our own personal vault? A goto place to store all the credentials and access it whenever needed. Being a PowerShell lover the first thing that arouse in mind was to create a module to manage the secrets locally. Thus, **PersonalVault** was created.
+Managing secrets can be a hassle and especially saving the logins in excel or sticky notes for quick and easy access is vulnerable. They can be exposed anytime without our knowledge. Won't it be good if we can have our own personal vault? A goto place to store all the credentials and access them whenever needed. Being a PowerShell lover the first thing that aroused in my mind was to create a module to manage the secrets locally. Thus, **PersonalVault** was created.
 
-**PersonalVault** is a PowerShell module to store our credentials **locally** that we use regularly. It could be anything, starting from bit locker login to bank credentials all the secrets can be encrypted and stored reliably in our system. **PersonalVault** uses PowerShell's inbuilt security mechanism and a 32 bit key to encrypt and store the credentials **locally**. We can add, update, get and delete the secrets once we've connected to the vault. We can export all our secrets and logins that we use for our day-to-day activities and save it to our vault on ease.
+**PersonalVault** is a PowerShell module to store our credentials that we use regularly, **locally**. It could be anything, starting from bit locker login to bank credentials all the secrets can be encrypted and stored reliably in our system. **PersonalVault** uses PowerShell's inbuilt security mechanism and a 32 bit key to encrypt and store the credentials **locally**. We can add, update, get and delete the secrets once we've connected to the vault. We can export all our secrets and logins that we use for our day-to-day activities and save them to our vault at ease.
 
 ## Table Of Contents
 
@@ -64,7 +64,7 @@ UserName                     Password Name          ConnectionFilePath
 testuser System.Security.SecureString PersonalVault C:\Users\testuser\.cos_testuser\connection.clixml
 ```
 
-Once you've successfully connected to the vault you get a connection object. The connection file path is where the registered credential are saved. You can overwrite it using *Force* parameter in **Register-PSPersonalVault** cmdlet. You can also remove the connection to the vault and re-register it. But to perform all these actions you should register first.
+Once you've successfully connected to the vault you get a connection object. The connection file path is where the registered credential is saved. You can overwrite it using *Force* parameter in **Register-PSPersonalVault** cmdlet. You can also remove the connection to the vault and re-register it. But to perform all these actions you should register first.
 
 Now that we have connected to the vault, let's add a secret to it.
 
@@ -72,7 +72,7 @@ Now that we have connected to the vault, let's add a secret to it.
 PS C:\> Add-PSSecret -Name "testuser@gmail.com" -Value "mysecretvalue" -Metadata "My gmail user account"
 ```
 
-**PersonalVault** validates the secret value before adding to the vault and warns if it was hacked.
+**PersonalVault** validates the secret value before adding it to the vault and warns if it was hacked.
 
 ```powershell
 PS C:\> Add-PSSecret -Name "testuser1@gmail.com" -Value "Password@123" -Metadata "My another gmail user account"
@@ -80,7 +80,7 @@ PS C:\> Add-PSSecret -Name "testuser1@gmail.com" -Value "Password@123" -Metadata
 WARNING: Secret 'Password@123' was hacked 2448 time(s); Consider changing the secret value.
 ```
 
-List all the stored secrets. Optionally tab complete the names and get the secret value associated to it, either as an encrypted text or as a plain text.
+List all the stored secrets. Optionally, tab complete the names and get the secret value associated to it, either as an encrypted text or as a plain text.
 
 ```powershell
 PS C:\> Get-PSSecret
@@ -120,8 +120,7 @@ PS C:\> Get-PSSecret -AsPlainText
 WARNING: Cannot get the value as plain text; Use the right key to get the secret value as plain text.
 ```
 
-You can't get the secrets because the key that was used to encrypt the secrets was different. You have use the same key to get the secrets as plain text.
-Once you have rotated the key, the old key will be archived so that you can use it to get the secrets.
+For instance in the above example, you can't get the secrets because the key that was used to encrypt the secrets was different. You have use the same key to get the secrets as plain text. Once you have rotated the key, the old key will be archived so that you can still use it to get the secrets.
 
 ```powershell
 PS C:\> Get-PSArchivedKey
