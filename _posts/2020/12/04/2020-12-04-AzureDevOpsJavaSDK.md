@@ -198,7 +198,7 @@ The library has more useful functions, give it a try and explore the library.
 
 ### Closing
 
-**azd** is a open source project and you can find the source code in [github](https://github.com/hkarthik7/azure-devops-java-sdk).
+**azd** is an open source project and you can find the source code in [github](https://github.com/hkarthik7/azure-devops-java-sdk).
 
 - Issues/bugs can be reported [here](https://github.com/hkarthik7/azure-devops-java-sdk/blob/main/.github/ISSUE_TEMPLATE.md).
 
