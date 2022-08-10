@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Automate the code deployment in Azure DevOps via REST API in java</title>
+	
+	<meta name="description" content="Automate the code deployment of your build and release pipeline in Azure DevOps via it's REST API in java.">
+	
+	<meta name="author" content="Harish Karthic">
+
+	<!-- Enable responsive viewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="google-site-verification" content="OtiazpwYWB3A71Cr0WkitUPn7iH86UVsbq0zCDK2Aec" />
+
+	<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+
+	<!-- Le styles -->
+	<link href="/assets/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/assets/resources/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/assets/resources/syntax/syntax.css" rel="stylesheet">
+	<link href="/assets/css/style.css" rel="stylesheet">
+
+	<!-- Le fav and touch icons -->
+	<!-- Update these with your own images
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+	-->
+	<link rel="shortcut icon" href="https://i1.wp.com/thehappymarriage.com.au/wp-content/uploads/2016/07/favicon-H-white.png?ssl=1">
+
+	<link rel="alternate" type="application/rss+xml" title="" href="/sitemap.xml">
+</head>
+
+<body>
+	<nav class="navbar navbar-default visible-xs" role="navigation">
+		<!-- Brand and toggle get grouped for better mobile display -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			
+			<a type="button" class="navbar-toggle nav-link" href="http://github.com/hkarthik7">
+				<i class="fa fa-github"></i>
+			</a>
+			
+			
+			
+			<a type="button" class="navbar-toggle nav-link" href="mailto:hkarthicb@gmail.com">
+				<i class="fa fa-envelope"></i>
+			</a>
+			
+			<a class="navbar-brand" href="/">
+				<img src="/assets/ico/harish-karthic.jpg" class="img-circle" />
+				Harish Karthic
+			</a>
+		</div>
+
+		<!-- Collect the nav links, forms, and other content for toggling -->
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			<ul class="nav navbar-nav">
+				<li class="active"><a href="/">Home</a></li>
+				<li><a href="/categories.html">Categories</a></li>
+				<li><a href="/tags.html">Tags</a></li>
+			</ul>
+		</div><!-- /.navbar-collapse -->
+	</nav>
+
+	<!-- nav-menu-dropdown -->
+	<div class="btn-group hidden-xs" id="nav-menu">
+		<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+			<i class="fa fa-bars"></i>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="/"><i class="fa fa-home"></i>Home</a></li>
+			<li><a href="/categories.html"><i class="fa fa-folder"></i>Categories</a></li>
+			<li><a href="/tags.html"><i class="fa fa-tags"></i>Tags</a></li>
+			<li class="divider"></li>
+			<li><a href="#"><i class="fa fa-arrow-up"></i>Top of Page</a></li>
+		</ul>
+	</div>
+
+	<div class="col-sm-3 sidebar hidden-xs" style="">
+		<!-- sidebar.html -->
+<header class="sidebar-header" role="banner">
+	<a href="/">
+		<img src="/assets/ico/harish-karthic.jpg" class="img-circle" />
+	</a>
+	<h3 class="title">
+        <a href="/">Harish Karthic</a>
+    </h3>
+</header>
+
+
+<div id="bio" class="text-center">
+	Azure DevOps Engineer and Automation Enthusiast
+</div>
+
+
+<div id="contact-list" class="text-center">
+	<ul class="list-unstyled list-inline">
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://github.com/hkarthik7">
+				<i class="fa fa-github-alt fa-lg"></i>
+			</a>
+		</li>
+		
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="mailto:hkarthicb@gmail.com">
+				<i class="fa fa-envelope fa-lg"></i>
+			</a>
+		</li>
+		
+	</ul>
+	<ul id="contact-list-secondary" class="list-unstyled list-inline">
+		
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="https://linkedin.com/in/harish-karthic-b">
+				<i class="fa fa-linkedin fa-lg"></i>
+			</a>
+		</li>
+		
+		<li>
+			<a class="btn btn-default btn-sm" href="/sitemap.xml">
+				<i class="fa fa-rss fa-lg"></i>
+			</a>
+		</li>
+	</ul>
+</div>
+<!-- sidebar.html end -->
+
+	</div>
+
+	<div class="col-sm-9 col-sm-offset-3">
+		<div class="page-header">
+  <h1>Automate the code deployment in Azure DevOps via REST API in java </h1>
+</div>
+	
+<article>
+
+	<div class="col-sm-10">
+	 <span class="post-date">
+	   
+	   August 
+	   5th,
+	   
+	   2022
+	 </span>
+	  <div class="article_body">
+	  <p>This article demonstrates how to deploy code programmatically by triggering the build and release pipeline with the help of Azure DevOps REST API in java.
+We’re going to use <strong>azd</strong> java library and see how easy it is to connect the build and release pipelines.</p>
+
+<h2 id="table-of-contents">Table Of Contents</h2>
+
+<ol>
+  <li>Introduction</li>
+  <li>Explore Api and examples</li>
+  <li>Closing</li>
+</ol>
+
+<h3 id="introduction">Introduction</h3>
+
+<p>To call Azure DevOps REST Api we need to understand how different services are defined. CI or build pipelines are defined in <strong>Build</strong> Api and CD or release pipelines are defined in <strong>Release</strong> Api. We would use different Apis to create the build and release which we will see when we explore the examples.</p>
+
+<h3 id="explore-api-and-examples">Explore Api and examples</h3>
+
+<p>We create an example program that queue’s the build pipeline, waits until that’s completed and then trigger the release pipeline. This may sound bit easy but it requires to connect few different Apis to complete the task.</p>
+
+<p>Let’s create a connection object and connect to Azure DevOps Api.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">organization</span> <span class="o">=</span> <span class="s">"my-organization"</span><span class="o">;</span>
+<span class="nc">String</span> <span class="n">project</span> <span class="o">=</span> <span class="s">"my-project"</span><span class="o">;</span>
+<span class="nc">String</span> <span class="n">token</span> <span class="o">=</span> <span class="s">"personal-access-token"</span><span class="o">;</span>
+
+<span class="kt">var</span> <span class="n">webApi</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AzDClientApi</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">token</span><span class="o">);</span>
+
+<span class="c1">// now we have the connection object, let's queue a build.</span>
+<span class="nc">String</span> <span class="n">buildPipelineName</span> <span class="o">=</span> <span class="s">"Demo-CI"</span><span class="o">;</span>
+<span class="nc">String</span> <span class="n">releasePipelineName</span> <span class="o">=</span> <span class="s">"Demo-CD"</span><span class="o">;</span>
+<span class="nc">String</span> <span class="n">releaseEnvName</span> <span class="o">=</span> <span class="s">"DR-Test"</span><span class="o">;</span>
+
+<span class="kt">var</span> <span class="n">build</span> <span class="o">=</span> <span class="n">webApi</span><span class="o">.</span><span class="na">getBuildApi</span><span class="o">();</span>
+<span class="kt">var</span> <span class="n">release</span> <span class="o">=</span> <span class="n">webApi</span><span class="o">.</span><span class="na">getReleaseApi</span><span class="o">();</span>
+</code></pre></div></div>
+
+<h4 id="queue-a-build">Queue a build</h4>
+
+<p>To queue a build we need build pipeline/definition Id. We can get the build definition id with it’s name and queue the build.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Starting the build pipeline.."</span><span class="o">);</span>
+
+<span class="c1">// Queue a build and wait until it completes.</span>
+<span class="kt">var</span> <span class="n">buildDefId</span> <span class="o">=</span> <span class="n">build</span><span class="o">.</span><span class="na">getBuildDefinitions</span><span class="o">().</span><span class="na">getBuildDefinitions</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">buildPipelineName</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">findFirst</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">get</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">getId</span><span class="o">();</span>
+
+<span class="kt">var</span> <span class="n">buildQueue</span> <span class="o">=</span> <span class="n">build</span><span class="o">.</span><span class="na">queueBuild</span><span class="o">(</span><span class="n">buildDefId</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>Now let’s monitor the status of the build pipeline.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="o">(</span><span class="n">buildQueue</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildStatus</span><span class="o">.</span><span class="na">NOTSTARTED</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kt">var</span> <span class="n">buildObj</span> <span class="o">=</span> <span class="n">build</span><span class="o">.</span><span class="na">getBuild</span><span class="o">(</span><span class="n">buildQueue</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">buildObj</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildStatus</span><span class="o">.</span><span class="na">COMPLETED</span> <span class="o">&amp;&amp;</span> <span class="n">buildObj</span><span class="o">.</span><span class="na">getResult</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildResult</span><span class="o">.</span><span class="na">SUCCEEDED</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pipeline status: "</span> <span class="o">+</span> <span class="nc">BuildResult</span><span class="o">.</span><span class="na">SUCCEEDED</span><span class="o">.</span><span class="na">name</span><span class="o">());</span>
+        <span class="k">break</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">buildObj</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildStatus</span><span class="o">.</span><span class="na">COMPLETED</span> <span class="o">&amp;&amp;</span> <span class="n">buildObj</span><span class="o">.</span><span class="na">getResult</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildResult</span><span class="o">.</span><span class="na">FAILED</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pipeline status: "</span> <span class="o">+</span> <span class="nc">BuildResult</span><span class="o">.</span><span class="na">FAILED</span><span class="o">.</span><span class="na">name</span><span class="o">());</span>
+        <span class="k">break</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="k">else</span> <span class="o">{</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pipeline status: "</span> <span class="o">+</span> <span class="n">buildObj</span><span class="o">.</span><span class="na">getStatus</span><span class="o">().</span><span class="na">name</span><span class="o">());</span>
+        <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">30000</span><span class="o">);</span>
+        <span class="k">continue</span><span class="o">;</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>We’re looking for the build queue status, if it’s not started then checking the status to see if the build pipeline run has succeeded or failed.</p>
+
+<h4 id="run-a-release-pipeline">Run a release pipeline</h4>
+
+<p>One the build pipeline is successfully completed. We can then use the artifact of build pipeline to create a release and queue it.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Starting the release pipeline.."</span><span class="o">);</span>
+
+<span class="kt">var</span> <span class="n">def</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="na">getReleaseDefinitions</span><span class="o">(</span><span class="nc">ReleaseDefinitionExpands</span><span class="o">.</span><span class="na">ARTIFACTS</span><span class="o">)</span>
+        <span class="o">.</span><span class="na">getReleaseDefinitions</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">releasePipelineName</span><span class="o">))</span>
+        <span class="o">.</span><span class="na">findFirst</span><span class="o">()</span>
+        <span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+<span class="kt">var</span> <span class="n">newRelease</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="na">createRelease</span><span class="o">(</span><span class="n">def</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="s">"New test release"</span><span class="o">,</span> <span class="n">def</span><span class="o">.</span><span class="na">getArtifacts</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getAlias</span><span class="o">(),</span>
+        <span class="n">buildQueue</span><span class="o">.</span><span class="na">getId</span><span class="o">().</span><span class="na">toString</span><span class="o">(),</span> <span class="n">buildPipelineName</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+
+
+<span class="kt">var</span> <span class="n">queueRelease</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="na">queueRelease</span><span class="o">(</span><span class="n">newRelease</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">releaseEnvName</span><span class="o">);</span>
+
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Release status: "</span> <span class="o">+</span> <span class="n">queueRelease</span><span class="o">.</span><span class="na">getStatus</span><span class="o">().</span><span class="na">name</span><span class="o">());</span>
+</code></pre></div></div>
+
+<p>We create a release with the release pipeline id, description for the release, artifact alias which is the alias name of build artifact. It can be a build artifact or git repo etc, build id, name of the build pipeline and if the release should be created in a draft state or not.</p>
+
+<p>When we get the definition id we need to expand the artifacts in the output for us to use when creating a release. If that is not specified, artifacts section will be null.</p>
+
+<p>Once we’ve all these information we can then queue the release with release id and stage or release environment name.</p>
+
+<p>The final code looks like this.</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">org.azd.enums.BuildResult</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.azd.enums.BuildStatus</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.azd.enums.ReleaseDefinitionExpands</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.azd.exceptions.AzDException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.azd.utils.AzDClientApi</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="nc">String</span> <span class="n">organization</span> <span class="o">=</span> <span class="s">"my-organization"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">project</span> <span class="o">=</span> <span class="s">"my-project"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">token</span> <span class="o">=</span> <span class="s">"personal-access-token"</span><span class="o">;</span>
+
+        <span class="nc">String</span> <span class="n">buildPipelineName</span> <span class="o">=</span> <span class="s">"Demo-CI"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">releasePipelineName</span> <span class="o">=</span> <span class="s">"Demo-CD"</span><span class="o">;</span>
+        <span class="nc">String</span> <span class="n">releaseEnvName</span> <span class="o">=</span> <span class="s">"DR-Test"</span><span class="o">;</span>
+
+        <span class="kt">var</span> <span class="n">webApi</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">AzDClientApi</span><span class="o">(</span><span class="n">organization</span><span class="o">,</span> <span class="n">project</span><span class="o">,</span> <span class="n">token</span><span class="o">);</span>
+        <span class="kt">var</span> <span class="n">build</span> <span class="o">=</span> <span class="n">webApi</span><span class="o">.</span><span class="na">getBuildApi</span><span class="o">();</span>
+        <span class="kt">var</span> <span class="n">release</span> <span class="o">=</span> <span class="n">webApi</span><span class="o">.</span><span class="na">getReleaseApi</span><span class="o">();</span>
+
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Starting the build pipeline.."</span><span class="o">);</span>
+
+            <span class="kt">var</span> <span class="n">buildDefId</span> <span class="o">=</span> <span class="n">build</span><span class="o">.</span><span class="na">getBuildDefinitions</span><span class="o">().</span><span class="na">getBuildDefinitions</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">buildPipelineName</span><span class="o">))</span>
+                    <span class="o">.</span><span class="na">findFirst</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">get</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">getId</span><span class="o">();</span>
+
+            <span class="kt">var</span> <span class="n">buildQueue</span> <span class="o">=</span> <span class="n">build</span><span class="o">.</span><span class="na">queueBuild</span><span class="o">(</span><span class="n">buildDefId</span><span class="o">);</span>
+
+            <span class="k">while</span> <span class="o">(</span><span class="n">buildQueue</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildStatus</span><span class="o">.</span><span class="na">NOTSTARTED</span><span class="o">)</span> <span class="o">{</span>
+                <span class="kt">var</span> <span class="n">buildObj</span> <span class="o">=</span> <span class="n">build</span><span class="o">.</span><span class="na">getBuild</span><span class="o">(</span><span class="n">buildQueue</span><span class="o">.</span><span class="na">getId</span><span class="o">());</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="n">buildObj</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildStatus</span><span class="o">.</span><span class="na">COMPLETED</span> <span class="o">&amp;&amp;</span> <span class="n">buildObj</span><span class="o">.</span><span class="na">getResult</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildResult</span><span class="o">.</span><span class="na">SUCCEEDED</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pipeline status: "</span> <span class="o">+</span> <span class="nc">BuildResult</span><span class="o">.</span><span class="na">SUCCEEDED</span><span class="o">.</span><span class="na">name</span><span class="o">());</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>
+
+                <span class="k">if</span> <span class="o">(</span><span class="n">buildObj</span><span class="o">.</span><span class="na">getStatus</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildStatus</span><span class="o">.</span><span class="na">COMPLETED</span> <span class="o">&amp;&amp;</span> <span class="n">buildObj</span><span class="o">.</span><span class="na">getResult</span><span class="o">()</span> <span class="o">==</span> <span class="nc">BuildResult</span><span class="o">.</span><span class="na">FAILED</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pipeline status: "</span> <span class="o">+</span> <span class="nc">BuildResult</span><span class="o">.</span><span class="na">FAILED</span><span class="o">.</span><span class="na">name</span><span class="o">());</span>
+                    <span class="k">break</span><span class="o">;</span>
+                <span class="o">}</span>
+
+                <span class="k">else</span> <span class="o">{</span>
+                    <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Pipeline status: "</span> <span class="o">+</span> <span class="n">buildObj</span><span class="o">.</span><span class="na">getStatus</span><span class="o">().</span><span class="na">name</span><span class="o">());</span>
+                    <span class="nc">Thread</span><span class="o">.</span><span class="na">sleep</span><span class="o">(</span><span class="mi">30000</span><span class="o">);</span>
+                    <span class="k">continue</span><span class="o">;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Starting the release pipeline.."</span><span class="o">);</span>
+
+            <span class="kt">var</span> <span class="n">def</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="na">getReleaseDefinitions</span><span class="o">(</span><span class="nc">ReleaseDefinitionExpands</span><span class="o">.</span><span class="na">ARTIFACTS</span><span class="o">)</span>
+                    <span class="o">.</span><span class="na">getReleaseDefinitions</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">stream</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">filter</span><span class="o">(</span><span class="n">x</span> <span class="o">-&gt;</span> <span class="n">x</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="n">releasePipelineName</span><span class="o">))</span>
+                    <span class="o">.</span><span class="na">findFirst</span><span class="o">()</span>
+                    <span class="o">.</span><span class="na">get</span><span class="o">();</span>
+
+            <span class="kt">var</span> <span class="n">newRelease</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="na">createRelease</span><span class="o">(</span><span class="n">def</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="s">"New test release"</span><span class="o">,</span> <span class="n">def</span><span class="o">.</span><span class="na">getArtifacts</span><span class="o">().</span><span class="na">get</span><span class="o">(</span><span class="mi">0</span><span class="o">).</span><span class="na">getAlias</span><span class="o">(),</span>
+                    <span class="n">buildQueue</span><span class="o">.</span><span class="na">getId</span><span class="o">().</span><span class="na">toString</span><span class="o">(),</span> <span class="n">buildPipelineName</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+
+
+            <span class="kt">var</span> <span class="n">queueRelease</span> <span class="o">=</span> <span class="n">release</span><span class="o">.</span><span class="na">queueRelease</span><span class="o">(</span><span class="n">newRelease</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">releaseEnvName</span><span class="o">);</span>
+
+            <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Release status: "</span> <span class="o">+</span> <span class="n">queueRelease</span><span class="o">.</span><span class="na">getStatus</span><span class="o">().</span><span class="na">name</span><span class="o">());</span>
+
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">AzDException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="closing">Closing</h3>
+
+<p><strong>azd</strong> library has support for all significant Apis and can be used for various automation tasks. Feel free to explore the library and
+raise for any concerns/issues <a href="https://github.com/hkarthik7/azure-devops-java-sdk/issues">here</a>.</p>
+
+	  </div>
+
+		
+		<ul class="tag_box list-unstyled list-inline">
+		  <li><i class="fa fa-folder-open"></i></li>
+		  
+		  
+			 
+				<li><a href="/categories.html#Azure DevOps-ref">
+					Azure DevOps <span>(6)</span>
+					,
+				</a></li>
+			 
+				<li><a href="/categories.html#Java-ref">
+					Java <span>(1)</span>
+					
+				</a></li>
+			
+		  
+		</ul>
+		  
+
+		
+		<ul class="list-inline">
+		  <li><i class="fa fa-tags"></i></li>
+		  
+		  
+			 
+				<li>
+					<a href="/tags.html#Azure DevOps-ref">
+					Azure DevOps <span>(6)</span>
+					,
+					</a>
+				</li>
+			 
+				<li>
+					<a href="/tags.html#Java-ref">
+					Java <span>(2)</span>
+					
+					</a>
+				</li>
+			
+		  
+		  
+		</ul>
+		  
+
+		<hr>
+
+		<div>
+      <section class="share col-sm-6">
+        <h4 class="section-title">Share Post</h4>
+        <a class="btn btn-default btn-sm twitter" href="http://twitter.com/share?text=Automate the code deployment in Azure DevOps via REST API in java"
+           onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <i class="fa fa-twitter fa-lg"></i>
+          Twitter
+        </a>
+        <a class="btn btn-default btn-sm facebook" href="https://www.facebook.com/sharer/sharer.php"
+           onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <i class="fa fa-facebook fa-lg"></i>
+          Facebook
+        </a>
+        <!-- <a class="btn btn-default btn-sm gplus"
+           onclick="window.open('https://plus.google.com/share?url='+window.location.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <i class="fa fa-google-plus fa-lg"></i>
+          Google+
+        </a> -->
+      </section>
+
+      <section class="col-sm-6 author">
+        <!-- <img src="/assets/ico/harish-karthic.jpg" class="img-rounded author-image" /> -->
+        <h4 class="section-title author-name">Harish Karthic</h4>
+        <p class="author-bio">Azure DevOps Engineer and Automation Enthusiast</p>
+      </section>
+    </div>
+
+    <div class="clearfix"></div>
+
+		<ul class="pager">
+		  
+		  <li class="previous"><a href="/powershell/2021/10/08/PersonalVault.html" title="Store the secrets locally using PersonalVault PowerShell module">&larr; Previous</a></li>
+		  
+		  
+			<li class="next disabled"><a>Next &rarr;</a>
+		  
+		</ul>
+
+		<hr>
+	</div>
+	
+	<div class="col-sm-2 sidebar-2">
+	
+	</div>
+</article>
+<div class="clearfix"></div>
+
+
+
+
+
+		<footer>
+			<hr/>
+			<!-- <p class="text-muted" style="padding-left: 600px;">
+				&copy; 2022 Harish Karthic
+			</p>
+			<span class="text-muted" style="padding-left: 600px;">Theme by debyll - Jekyll</span> -->
+			<p class="text-muted">
+				&copy; 2022 Harish Karthic
+			</p>
+			<span class="text-muted">Theme by debyll - Jekyll</span>
+		</footer>
+	</div>
+
+	<script type="text/javascript" src="/assets/resources/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/assets/resources/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="/assets/js/app.js"></script>
+</body>
+</html>
+
+
+
